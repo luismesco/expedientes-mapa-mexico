@@ -43,10 +43,12 @@ p,h1,h2,h3,h4{margin:0}
 .chat-icon-button svg,.chat-new svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;flex:none}
 .chat-new{display:flex;align-items:center;gap:.5rem;flex:none;border:0;border-radius:2rem;padding:.8rem 1rem;text-decoration:none;font-size:.78rem;font-weight:600;background:#f5edf0;color:var(--chat-wine)}
 .chat-new:hover{background:#f7f0f3}
-.entidades-toggle{display:inline-flex;align-items:center;gap:.5rem;flex:none;border:0;border-radius:2rem;padding:.65rem 1rem;background:var(--chat-wine);color:#fff;font-family:Montserrat,sans-serif;font-size:.8rem;font-weight:600;min-height:2.75rem;cursor:pointer}
-.entidades-toggle:hover{background:#571129}
-.entidades-toggle svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;flex:none;transition:transform .15s ease}
-.entidades-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+.entidades-toggle{display:inline-flex;align-items:center;justify-content:center;flex:none;width:2.75rem;height:2.75rem;min-height:2.75rem;padding:0;border:1px solid var(--chat-line);border-radius:.6rem;background:transparent;color:var(--chat-wine);font-family:Montserrat,sans-serif;cursor:pointer}
+.entidades-toggle:hover{background:#f7f3f5}
+.entidades-toggle:focus-visible{outline:2px solid var(--chat-wine);outline-offset:2px}
+.entidades-toggle[aria-expanded="true"]{background:#f5edf0}
+.entidades-toggle .hamburger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:20px;flex:none}
+.entidades-toggle .hamburger span{display:block;width:20px;height:2px;border-radius:2px;background:var(--chat-wine)}
 
 /* ===== layout estilo DJF (.chat-layout + historial lateral) ===== */
 .chat-layout{display:grid;grid-template-columns:215px minmax(0,1fr);gap:2rem;align-items:start}
@@ -240,7 +242,7 @@ ul.links li:last-child{border-bottom:none}
   .chat-heading-main>div>p{display:none}
   .chat-new{font-size:.68rem;padding:.6rem .7rem}
   .chat-new svg{width:16px;height:16px}
-  .entidades-toggle{font-size:.72rem;padding:.55rem .8rem;min-height:2.5rem}
+  .entidades-toggle{width:2.5rem;height:2.5rem;min-height:2.5rem}
   .chat-welcome{padding:1.2rem .3rem 1rem}
   .chat-hello{font-size:1.2rem}
   .chat-welcome h2{font-size:1.9rem}
@@ -265,7 +267,7 @@ ul.links li:last-child{border-bottom:none}
 <section class="electoral-chat chat-history-collapsed" id="chatRoot">
   <header class="chat-heading">
     <div class="chat-heading-main">
-      <button type="button" id="historyToggle" class="entidades-toggle" aria-expanded="false" aria-controls="chatHistory"><span>Entidades</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+      <button type="button" id="historyToggle" class="entidades-toggle" aria-expanded="false" aria-controls="chatHistory" aria-label="Mostrar u ocultar el panel de entidades" title="Mostrar u ocultar el panel de entidades"><span class="hamburger" aria-hidden="true"><span></span><span></span><span></span></span></button>
       <div>
         <h1>Expedientes</h1>
         <p>Expedientes y fiscalización por entidad, en conversación</p>
@@ -838,14 +840,14 @@ function cargoRows(d, etapa){
     return '<div class="cargo"><div class="top"><h4>'+CARGOS[c]+'</h4><span class="badge unv">Sin verificar</span></div>'
       + '<p>Aún no hemos verificado un acuerdo oficial para este cargo. El acervo verificado al 20 de noviembre de 2026 cubre topes de precampaña; los de campaña se incorporarán cuando se lea el acuerdo en el PDF oficial del OPLE.</p>'
       + '<a class="document-link" href="https://portal.ine.mx/voto-y-elecciones/opl/oples-estados/" target="_blank" rel="noopener">'+icon("consejo")+'<span><span class="source-badge">INE · Directorio OPLE</span>Acuerdos del OPLE ('+esc(d.siglas)+') vía directorio INE<small>Sitio oficial, acuerdos y estrados</small></span>'+icon("enlace")+'</a>'
-      + '<a class="document-link" href="https://drive.google.com/drive/folders/1dUjol_T11rON3SvEY2ONiUUBYLNl8hz1" target="_blank" rel="noopener">'+icon("informe")+'<span><span class="source-badge">Acervo · Drive</span>Acervo de topes en Drive<small>Carpeta del proyecto 2026–2027</small></span>'+icon("enlace")+'</a>'
+      + '<a class="document-link" href="'+drv(TOPESF[d.code])+'" target="_blank" rel="noopener">'+icon("informe")+'<span><span class="source-badge">Acervo · Drive</span>Acervo de topes en Drive<small>Carpeta de la entidad en Drive</small></span>'+icon("enlace")+'</a>'
       + docLink(drv(TOPESF[d.code]), "Drive · Carpeta de topes", "Carpeta de topes de " + d.name, "Carpeta de la entidad en Drive") + '</div>';
   }).join("");
 }
 function renderTopes(){
   var d = current, body = $("topesBody");
   if(currentTab==="his"){
-    body.innerHTML = '<div class="empty"><p>Los procesos históricos se mantienen separados de 2026–2027. Este acervo verificado solo contiene el proceso local 2026–2027 (y el acuerdo federal INE/CG660/2026); no hay acuerdos históricos de '+esc(d.name)+' vinculados en esta vista.</p><p><a class="btn-primary" href="https://drive.google.com/drive/folders/1dUjol_T11rON3SvEY2ONiUUBYLNl8hz1" target="_blank" rel="noopener">Carpeta del acervo en Drive</a></p>' + topesFolderLink(d) + '</div>';
+    body.innerHTML = '<div class="empty"><p>Los procesos históricos se mantienen separados de 2026–2027. Este acervo verificado solo contiene el proceso local 2026–2027 (y el acuerdo federal INE/CG660/2026); no hay acuerdos históricos de '+esc(d.name)+' vinculados en esta vista.</p><p><a class="btn-primary" href="'+drv(TOPESF[d.code])+'" target="_blank" rel="noopener">Carpeta del acervo en Drive</a></p>' + topesFolderLink(d) + '</div>';
     return;
   }
   var head = "";
@@ -873,7 +875,7 @@ function openFicha(code, scroll){
   Array.prototype.forEach.call(document.querySelectorAll(".entName"), function(el){ el.textContent = d.name; });
   Array.prototype.forEach.call(document.querySelectorAll(".entSiglas"), function(el){ el.textContent = d.siglas; });
   $("opleNombre").textContent = d.ople; $("opleSiglas").textContent = d.siglas;
-  $("opleAcuerdos").innerHTML = (d.pdfs.length ? pdfLinks(d) : '<p class="small muted" style="margin-top:.6rem">Sin PDF al corte: carpeta vacía. <a href="https://drive.google.com/drive/folders/1dUjol_T11rON3SvEY2ONiUUBYLNl8hz1" target="_blank" rel="noopener">Ver carpeta en Drive</a></p>') + topesFolderLink(d);
+  $("opleAcuerdos").innerHTML = (d.pdfs.length ? pdfLinks(d) : '<p class="small muted" style="margin-top:.6rem">Sin PDF al corte: carpeta vacía. <a href="'+drv(TOPESF[d.code])+'" target="_blank" rel="noopener">Ver carpeta en Drive</a></p>') + topesFolderLink(d);
   var n5 = NORM5[d.code];
   $("normLocal").innerHTML =
     docLink(drv(n5[0]), "Acervo · 05 Normativa local", "Normativa local de " + d.name, "Tipos en la carpeta: " + n5[1])
