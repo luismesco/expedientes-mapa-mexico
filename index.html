@@ -290,6 +290,28 @@ body{height:100dvh}
   .chat-suggestions button{min-height:76px}
   #genWrap{max-height:52vh}
 }
+
+/* ===== Cobertura solo en Vista general y Fuentes · mapa y detalle sin scroll de página ===== */
+#stepWelcome{overflow:hidden}
+#vistaMapa{overflow:hidden;display:flex;flex-direction:column}
+#vistaMapa>section{flex:1;min-height:0;display:flex;flex-direction:column}
+#vistaMapa .section-row{flex:none;margin-top:0}
+#vistaMapa .chat-sources{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+#vistaMapa .mexico-map{flex:1 1 auto;min-height:0;aspect-ratio:auto;width:min(100%,680px);margin:.4rem auto;display:flex;align-items:center;justify-content:center}
+#vistaMapa .mexico-map svg{width:100%;height:100%;max-height:100%}
+#vistaMapa .map-legend,#vistaMapa .federal-button,#vistaMapa .office-tags,#vistaMapa .map-help,#vistaMapa .map-credit{flex:none}
+#vistaMapa #federalBox{overflow-y:auto;min-height:0;overscroll-behavior:contain}
+#vistaMapa .step-actions{flex:none;margin-top:.7rem}
+#vistaGeneral #covWrap{max-height:46vh;overflow:auto}
+#vistaFicha{overflow:hidden;display:flex;flex-direction:column}
+#vistaFicha #volverRow{flex:none}
+#fichaCards{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+#detailBar{flex:none}
+#vistaFicha .bloque{flex:1;min-height:0;display:flex;flex-direction:column}
+#vistaFicha .bloque>h3{flex:none}
+#vistaFicha .bloque-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:.15rem}
+.cargo-tabs{flex:none}
+@media(max-width:850px){#vistaMapa .mexico-map{width:100%}}
 </style>
 </head>
 <body>
@@ -323,12 +345,6 @@ body{height:100dvh}
         <p class="chat-hello">Hola</p>
         <h2>¿Qué entidad revisamos hoy?</h2>
         <p class="chat-welcome-copy">Selecciona una entidad en el mapa de México para abrir su ficha con errores y omisiones, normatividad, OPLE, topes de gastos y expedientes, con los acuerdos oficiales vinculados en PDF.</p>
-        <div class="stats" role="list" aria-label="Resumen de cobertura">
-          <span class="stat-chip" role="listitem"><b>22 / 32</b> entidades con acuerdo de precampaña</span>
-          <span class="stat-chip" role="listitem"><b>10</b> sin acuerdo localizado al corte</span>
-          <span class="stat-chip" role="listitem"><b>29</b> PDF vinculados</span>
-          <span class="stat-chip" role="listitem"><b>54 / 80</b> combinaciones ámbito–cargo</span>
-        </div>
         <div class="step-actions"><button type="button" class="btn-primary" id="btnToMap">Ver el mapa →</button><button type="button" class="btn-ghost" id="btnToGeneral">Vista general</button></div>
         <p class="welcome-foot">Expedientes — Mapa de México · Autor: Luis Montañez Escobar</p>
       </div>
@@ -361,11 +377,6 @@ body{height:100dvh}
           </div>
           <p class="map-credit">Geografía: INEGI · Marco Geoestadístico, diciembre de 2025. Cartografía SVG incrustada en esta misma página (archivo único, sin dependencias de servidor).</p>
         </div>
-        <div class="chat-sources">
-          <h3>Cobertura por entidad y cargo — precampaña 2026–2027</h3>
-          <p class="small muted" style="margin-top:.5rem;line-height:1.7">Toca cualquier fila para abrir la ficha de la entidad. «Acuerdo localizado» significa que el PDF oficial está en el acervo; el monto por cargo se muestra como <em>por verificar en PDF oficial</em> hasta leerlo en el documento. Cobertura por tipo de elección (resumen, pág. 13): gubernatura 11 de 17, diputaciones locales 21 de 31, ayuntamientos o alcaldías 21 de 30, juntas municipales 0 de 1 y diputaciones federales 1 de 1.</p>
-          <p style="margin-top:.8rem"><button type="button" class="btn-ghost" id="covToggle" aria-expanded="false" aria-controls="covWrap">Ver tabla de cobertura (32 entidades)</button></p><div id="covWrap" hidden></div>
-        </div>
         <p class="step-actions"><button type="button" class="btn-ghost" id="btnToFuentes">Fuentes y reglas</button></p>
       </section>
       </div>
@@ -383,6 +394,9 @@ body{height:100dvh}
             <span class="stat-chip" role="listitem"><b>54 / 80</b> combinaciones ámbito–cargo</span>
           </div>
           <div id="genWrap"></div>
+          <h3 style="margin-top:1.2rem">Cobertura por entidad y cargo — precampaña 2026–2027</h3>
+          <p class="small muted" style="margin-top:.5rem;line-height:1.7">Toca cualquier fila para abrir la ficha de la entidad. «Acuerdo localizado» significa que el PDF oficial está en el acervo; el monto por cargo se muestra como <em>por verificar en PDF oficial</em> hasta leerlo en el documento. Cobertura por tipo de elección (resumen, pág. 13): gubernatura 11 de 17, diputaciones locales 21 de 31, ayuntamientos o alcaldías 21 de 30, juntas municipales 0 de 1 y diputaciones federales 1 de 1.</p>
+          <p style="margin-top:.8rem"><button type="button" class="btn-ghost" id="covToggle" aria-expanded="false" aria-controls="covWrap">Ver tabla de cobertura (32 entidades)</button></p><div id="covWrap" hidden></div>
         </div>
       </section>
 
@@ -519,6 +533,16 @@ body{height:100dvh}
       <section id="fuentes" aria-labelledby="sourcesTitle" hidden>
         <div class="section-row"><div><p class="kicker">Consulta</p><h2 id="sourcesTitle">Fuentes y reglas</h2></div></div>
         <p style="margin-top:.6rem"><button class="btn-ghost" id="btnFuentesBack" type="button">← Volver al mapa</button></p>
+        <div class="chat-sources">
+          <h3>Cobertura</h3>
+          <div class="stats" role="list" aria-label="Resumen de cobertura de precampaña 2026–2027">
+            <span class="stat-chip" role="listitem"><b>22 / 32</b> entidades con acuerdo de precampaña</span>
+            <span class="stat-chip" role="listitem"><b>10</b> sin acuerdo localizado al corte</span>
+            <span class="stat-chip" role="listitem"><b>29</b> PDF vinculados</span>
+            <span class="stat-chip" role="listitem"><b>54 / 80</b> combinaciones ámbito–cargo</span>
+          </div>
+          <p style="margin-top:.8rem"><button type="button" class="btn-ghost" id="btnFuentesCov">Ver tabla de cobertura por entidad y cargo (Vista general)</button></p>
+        </div>
         <div class="chat-sources">
           <p class="chat-review-scope">Única fuente de topes: inventario verificado el 20 de noviembre de 2026 sobre la carpeta de Drive «Topes de gastos de precampaña — OPLE 2026-2027» (29 PDF: 28 locales + 1 federal) y el resumen de cobertura de 16 páginas con el mismo corte. Los montos locales por cargo no se transcribieron: donde el monto no se ha leído en el PDF oficial, la ficha dice «por verificar en PDF oficial». Las ventanas previstas de las 10 entidades pendientes provienen del anexo del acuerdo INE/CG480/2026, hoja «Calendarios de Coordinación». Esta página es una calca lista para integrar con el sistema de diseño de DJF (judicial.css / MorenAI); no es un despliegue en DJF ni en atlas-web.</p>
           <div class="source-links">
@@ -701,7 +725,7 @@ function topesFolderLink(d){
   return '<div class="doc-list">' + docLink(drv(TOPESF[d.code]), "Drive · Carpeta de topes", "Carpeta de topes de " + d.name, d.status === "pendiente" ? "Carpeta de la entidad en Drive (vacía al corte: sin acuerdo localizado)" : "Carpeta de la entidad en Drive, con el acuerdo de topes y sus anexos en PDF") + '</div>';
 }
 
-var current = null, currentTab = "pre", mapLoaded = false;
+var current = null, currentTab = "pre", currentCargo = "G", mapLoaded = false;
 var $ = function(id){ return document.getElementById(id); };
 function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
 function icon(n){ return '<svg class="icon" aria-hidden="true"><use href="#'+n+'"></use></svg>'; }
@@ -890,8 +914,21 @@ function pdfLinks(d){
   if(!d.pdfs.length) return '<p class="small muted" style="margin-top:.6rem">Sin PDF al corte: carpeta vacía.</p>';
   return d.pdfs.map(function(p){ return '<a class="document-link" href="'+esc(p.url)+'" target="_blank" rel="noopener">'+icon("informe")+'<span><span class="source-badge">PDF oficial · '+esc(d.siglas)+'</span>'+esc(p.label)+'<small>Abrir acuerdo en Drive</small></span>'+icon("enlace")+'</a>'; }).join("");
 }
+function cargoList(d){ var list = ["G","D","A"]; if(d.scope.indexOf("J")>=0) list.push("J"); return list; }
+function cargoTabs(d){
+  var list = cargoList(d);
+  if(list.indexOf(currentCargo)<0) currentCargo = list[0];
+  return '<div class="tabs cargo-tabs" role="tablist" aria-label="Cargo">' + list.map(function(c){
+    return '<button type="button" role="tab" data-cargo="'+c+'" aria-selected="'+String(c===currentCargo)+'">'+CARGOS[c]+'</button>';
+  }).join("") + '</div>';
+}
+function bindCargoTabs(){
+  Array.prototype.forEach.call(document.querySelectorAll(".cargo-tabs button"), function(b){
+    b.addEventListener("click", function(){ currentCargo = b.getAttribute("data-cargo"); renderTopes(); });
+  });
+}
 function cargoRows(d, etapa){
-  var list = ["G","D","A"]; if(d.scope.indexOf("J")>=0) list.push("J");
+  var list = [currentCargo];
   return list.map(function(c){
     var inScope = d.scope.indexOf(c)>=0;
     var nota = (NOTAS[d.code] && NOTAS[d.code][c]) ? '<p class="muted">'+esc(NOTAS[d.code][c])+'</p>' : "";
@@ -931,12 +968,14 @@ function renderTopes(){
   } else {
     head = '<p class="small" style="margin-top:.8rem;line-height:1.7"><strong>Proceso electoral local 2026–2027 · Campaña.</strong> Etapa separada de la precampaña: ningún monto de campaña de '+esc(d.name)+' se da por publicado sin leerlo en el acuerdo oficial del '+esc(d.siglas)+'.</p>';
   }
-  body.innerHTML = head + topesFolderLink(d) + cargoRows(d, currentTab);
+  body.innerHTML = head + topesFolderLink(d) + cargoTabs(d) + '<div class="topes-scroll">' + cargoRows(d, currentTab) + '</div>';
+  bindCargoTabs();
 }
 function openFicha(code, scroll){
   var d = null; DATA.forEach(function(x){ if(x.code===code) d = x; });
   if(!d) return;
   current = d; currentTab = "pre";
+  currentCargo = cargoList(d).filter(function(c){ return d.scope.indexOf(c)>=0; })[0] || cargoList(d)[0];
   sel.value = code;
   $("fNombre").textContent = d.name;
   $("fOple").textContent = d.ople + " (" + d.siglas + ")";
@@ -1099,6 +1138,12 @@ var btm = $("btnToMap"); if(btm) btm.addEventListener("click", function(){ goSte
 var btg = $("btnToGeneral"); if(btg) btg.addEventListener("click", function(){ goStep("general"); });
 var btf = $("btnToFuentes"); if(btf) btf.addEventListener("click", function(){ goStep("fuentes"); });
 var bfb = $("btnFuentesBack"); if(bfb) bfb.addEventListener("click", function(){ goStep("mapa"); });
+var bfc = $("btnFuentesCov"); if(bfc) bfc.addEventListener("click", function(){
+  goStep("general");
+  var w = $("covWrap"), b = $("covToggle");
+  if(w && w.hidden){ w.hidden = false; if(b){ b.setAttribute("aria-expanded","true"); b.textContent = b.textContent.replace("Ver","Ocultar"); } }
+  if(w){ w.scrollTop = 0; if(w.scrollIntoView) w.scrollIntoView({block:"start"}); }
+});
 var bbc = $("btnBackCards"); if(bbc) bbc.addEventListener("click", function(){ goStep("ficha"); });
 var bdm = $("btnDetailToMap"); if(bdm) bdm.addEventListener("click", function(){ resetConsulta("mapa"); });
 goStep("welcome");
