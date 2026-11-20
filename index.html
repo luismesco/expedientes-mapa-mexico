@@ -259,6 +259,37 @@ ul.links li:last-child{border-bottom:none}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media print{.chat-heading .chat-new,.chat-history,.chat-icon-button,.entidades-toggle,.map-tooltip{display:none!important}.electoral-chat{max-width:none}.chat-layout{grid-template-columns:1fr}}
+
+/* ===== Una sola sección a la vez · sin scroll de página ===== */
+html,body{height:100%;overflow:hidden}
+body{height:100dvh}
+.electoral-chat{height:100dvh;max-height:100dvh;display:flex;flex-direction:column;padding:1rem 1rem .6rem;overflow:hidden}
+.chat-heading{flex:none;margin-bottom:.7rem}
+.chat-layout{flex:1;min-height:0;display:block;position:relative}
+.chat-main{height:100%;min-height:0;display:flex;flex-direction:column;width:100%}
+.chat-welcome,#vistaMapa,#vistaGeneral,#vistaFicha,#fuentes{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding-right:.15rem}
+.chat-welcome{display:flex;flex-direction:column;justify-content:center;padding-top:1rem;padding-bottom:1rem}
+.view-tabs{flex:none;margin:0 0 .8rem}
+.mexico-map{width:min(100%,660px);margin:.6rem auto}
+.step-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem;align-items:center}
+.welcome-foot{font-size:.68rem;color:#766972;margin-top:1.6rem;line-height:1.6}
+#detailBar{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:.8rem}
+#detailBar[hidden]{display:none!important}
+#genWrap{max-height:58vh;overflow:auto}
+#covWrap{max-height:44vh;overflow:auto;margin-top:.6rem}
+#salasYears,#dofYears{max-height:230px;overflow-y:auto}
+#expAcervo{max-height:250px;overflow-y:auto;padding-right:.2rem}
+.bloque-body{padding-bottom:.4rem}
+.site-footer{display:none}
+.chat-history{position:fixed;top:0;left:0;bottom:0;width:min(330px,88vw);z-index:60;border-radius:0;overflow-y:auto;box-shadow:0 0 40px #45253533}
+.chat-suggestions button{min-height:118px}
+@media(max-width:850px){
+  .electoral-chat{padding:.7rem .6rem .5rem}
+  .chat-welcome{justify-content:flex-start;padding-top:2rem}
+  .mexico-map{width:100%}
+  .chat-suggestions button{min-height:76px}
+  #genWrap{max-height:52vh}
+}
 </style>
 </head>
 <body>
@@ -288,7 +319,7 @@ ul.links li:last-child{border-bottom:none}
     </aside>
 
     <div class="chat-main">
-      <div class="chat-welcome">
+      <div class="chat-welcome" id="stepWelcome">
         <p class="chat-hello">Hola</p>
         <h2>¿Qué entidad revisamos hoy?</h2>
         <p class="chat-welcome-copy">Selecciona una entidad en el mapa de México para abrir su ficha con errores y omisiones, normatividad, OPLE, topes de gastos y expedientes, con los acuerdos oficiales vinculados en PDF.</p>
@@ -298,10 +329,12 @@ ul.links li:last-child{border-bottom:none}
           <span class="stat-chip" role="listitem"><b>29</b> PDF vinculados</span>
           <span class="stat-chip" role="listitem"><b>54 / 80</b> combinaciones ámbito–cargo</span>
         </div>
+        <div class="step-actions"><button type="button" class="btn-primary" id="btnToMap">Ver el mapa →</button><button type="button" class="btn-ghost" id="btnToGeneral">Vista general</button></div>
+        <p class="welcome-foot">Expedientes — Mapa de México · Autor: Luis Montañez Escobar</p>
       </div>
 
       <!-- ============ SELECTOR DE VISTAS ============ -->
-      <div class="view-tabs" role="tablist" aria-label="Vistas de la sección Expedientes">
+      <div class="view-tabs" id="viewTabs" role="tablist" hidden aria-label="Vistas de la sección Expedientes">
         <button type="button" class="view-tab" role="tab" id="tab-mapa" data-view="mapa" aria-selected="true" aria-controls="vistaMapa">Vista de mapa</button>
         <button type="button" class="view-tab" role="tab" id="tab-general" data-view="general" aria-selected="false" aria-controls="vistaGeneral" tabindex="-1">Vista general</button>
         <button type="button" class="view-tab" role="tab" id="tab-particular" data-view="particular" aria-selected="false" aria-controls="vistaFicha" tabindex="-1" disabled>Vista particular</button>
@@ -331,8 +364,9 @@ ul.links li:last-child{border-bottom:none}
         <div class="chat-sources">
           <h3>Cobertura por entidad y cargo — precampaña 2026–2027</h3>
           <p class="small muted" style="margin-top:.5rem;line-height:1.7">Toca cualquier fila para abrir la ficha de la entidad. «Acuerdo localizado» significa que el PDF oficial está en el acervo; el monto por cargo se muestra como <em>por verificar en PDF oficial</em> hasta leerlo en el documento. Cobertura por tipo de elección (resumen, pág. 13): gubernatura 11 de 17, diputaciones locales 21 de 31, ayuntamientos o alcaldías 21 de 30, juntas municipales 0 de 1 y diputaciones federales 1 de 1.</p>
-          <div id="covWrap"></div>
+          <p style="margin-top:.8rem"><button type="button" class="btn-ghost" id="covToggle" aria-expanded="false" aria-controls="covWrap">Ver tabla de cobertura (32 entidades)</button></p><div id="covWrap" hidden></div>
         </div>
+        <p class="step-actions"><button type="button" class="btn-ghost" id="btnToFuentes">Fuentes y reglas</button></p>
       </section>
       </div>
 
@@ -375,17 +409,18 @@ ul.links li:last-child{border-bottom:none}
           </div>
           <h3 class="acervo-sub">Sentencias federales por sala y año — carpeta 01</h3>
           <p class="small muted" style="line-height:1.7;margin-top:.3rem">Cada año enlaza directo a la carpeta de ese año dentro de la sala correspondiente, en «01 Sentencias federales».</p>
-          <div id="salasYears"></div>
+          <p style="margin-top:.6rem"><button type="button" class="btn-ghost" id="salasToggle" aria-expanded="false" aria-controls="salasYears">Ver años por sala</button></p><div id="salasYears" hidden></div>
           <h3 class="acervo-sub">Diario Oficial de la Federación por año — carpeta 09</h3>
           <p class="small muted" style="line-height:1.7;margin-top:.3rem">95 carpetas por año, de 1917 a 2026, agrupadas por década; cada año enlaza directo a su carpeta en «09 DOF». Sin carpeta por año en el Acervo: 1983, 1995, 1997–2006 y 2021–2023.</p>
-          <div id="dofYears" class="dof-groups"></div>
+          <p style="margin-top:.6rem"><button type="button" class="btn-ghost" id="dofToggle" aria-expanded="false" aria-controls="dofYears">Ver años del DOF</button></p><div id="dofYears" class="dof-groups" hidden></div>
         </div>
       </section>
       </div>
 
       <!-- ============ VISTA PARTICULAR · FICHA ============ -->
       <section id="vistaFicha" class="ficha" role="tabpanel" aria-labelledby="tab-particular" hidden aria-live="polite">
-        <p><button class="btn-ghost" id="btnVolver" type="button">← Volver al mapa</button></p>
+        <p id="volverRow"><button class="btn-ghost" id="btnVolver" type="button">← Volver al mapa</button></p>
+        <div id="fichaCards">
         <div class="chat-sources">
           <div class="ficha-head">
             <svg class="entity-silhouette" id="fSilhouette" aria-hidden="true" focusable="false"><use id="fSilhouetteUse" href="#AGS"></use></svg>
@@ -409,8 +444,11 @@ ul.links li:last-child{border-bottom:none}
           <button type="button" data-goto-block="b-topes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V3m0 1h12l-3 4 3 4H6M3 21h6"/></svg><span>4 · Topes de campaña<small>Acuerdos y montos por proceso, cargo y demarcación</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
           <button type="button" data-goto-block="b-exp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.1M3 12h.1M3 18h.1"/></svg><span>5 · Expedientes<small>Listado filtrado a la entidad, con búsqueda por folio</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
         </div>
+        </div>
 
-        <section class="chat-sources bloque" id="b-eyo"><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-eyo-btn" aria-expanded="false" aria-controls="b-eyo-body"><span class="bnum">1</span><span class="bloque-titles"><span class="bloque-title">Errores y Omisiones</span><span class="bloque-sum">Sin carpeta en el Acervo · Se consulta en DJF con tu sesión</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-eyo-body" role="region" aria-labelledby="b-eyo-btn" hidden>
+        <div id="detailBar" hidden><button class="btn-ghost" id="btnBackCards" type="button">← Volver a las tarjetas</button><button class="btn-ghost" id="btnDetailToMap" type="button">Volver al mapa</button></div>
+
+        <section class="chat-sources bloque" id="b-eyo" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-eyo-btn" aria-expanded="false" aria-controls="b-eyo-body"><span class="bnum">1</span><span class="bloque-titles"><span class="bloque-title">Errores y Omisiones</span><span class="bloque-sum">Sin carpeta en el Acervo · Se consulta en DJF con tu sesión</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-eyo-body" role="region" aria-labelledby="b-eyo-btn" hidden>
           <p class="intro">Oficios, observaciones y respuestas vinculados a los expedientes de <span class="entName">la entidad</span>. Filtra por tipo de documento:</p>
           <div class="filtros" id="eyoFiltros" role="group" aria-label="Tipo de documento de errores y omisiones">
             <button type="button" data-eyo="Oficio de errores y omisiones" aria-pressed="false">Oficios de errores y omisiones</button>
@@ -426,7 +464,7 @@ ul.links li:last-child{border-bottom:none}
           </div>
         </section>
 
-        <section class="chat-sources bloque" id="b-norm"><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-norm-btn" aria-expanded="false" aria-controls="b-norm-body"><span class="bnum">2</span><span class="bloque-titles"><span class="bloque-title">Normatividad</span><span class="bloque-sum">Leyes y acuerdos aplicables · Local (05) y federal (04)</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-norm-body" role="region" aria-labelledby="b-norm-btn" hidden>
+        <section class="chat-sources bloque" id="b-norm" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-norm-btn" aria-expanded="false" aria-controls="b-norm-body"><span class="bnum">2</span><span class="bloque-titles"><span class="bloque-title">Normatividad</span><span class="bloque-sum">Leyes y acuerdos aplicables · Local (05) y federal (04)</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-norm-body" role="region" aria-labelledby="b-norm-btn" hidden>
           <p class="intro">Marco general aplicable a la fiscalización en <span class="entName">la entidad</span>: normatividad local en «05 Normativa local» y federal en «04 Normativa federal» del Acervo.</p>
           <ul class="links">
             <li><strong>Ley General de Instituciones y Procedimientos Electorales (LGIPE)</strong> — texto vigente, Cámara de Diputados.<br><a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LGIPE.pdf" target="_blank" rel="noopener">Abrir texto vigente (PDF oficial)</a></li>
@@ -439,7 +477,7 @@ ul.links li:last-child{border-bottom:none}
           </div>
         </section>
 
-        <section class="chat-sources bloque" id="b-ople"><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-ople-btn" aria-expanded="false" aria-controls="b-ople-body"><span class="bnum">3</span><span class="bloque-titles"><span class="bloque-title">OPLE</span><span class="bloque-sum" id="sumOple">Publicaciones del OPLE en el Acervo (08)</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-ople-body" role="region" aria-labelledby="b-ople-btn" hidden>
+        <section class="chat-sources bloque" id="b-ople" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-ople-btn" aria-expanded="false" aria-controls="b-ople-body"><span class="bnum">3</span><span class="bloque-titles"><span class="bloque-title">OPLE</span><span class="bloque-sum" id="sumOple">Publicaciones del OPLE en el Acervo (08)</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-ople-body" role="region" aria-labelledby="b-ople-btn" hidden>
           <p style="margin-top:.6rem;font-size:.9rem"><strong id="opleNombre"></strong> (<span id="opleSiglas"></span>)</p>
           <ul class="links">
             <li><strong>Sitio oficial y estrados</strong> — el INE mantiene el acceso verificado a la página de cada OPLE, donde se publican acuerdos y estrados electrónicos.<br><a href="https://portal.ine.mx/voto-y-elecciones/opl/oples-estados/" target="_blank" rel="noopener">Ir al directorio de OPLE del INE y abrir el sitio de <span class="entSiglas">la entidad</span></a> · <a href="https://portal.ine.mx/voto-y-elecciones/opl/" target="_blank" rel="noopener">Qué son los OPLE (INE)</a></li>
@@ -450,7 +488,7 @@ ul.links li:last-child{border-bottom:none}
           </div>
         </section>
 
-        <section class="chat-sources bloque" id="b-topes"><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-topes-btn" aria-expanded="false" aria-controls="b-topes-body"><span class="bnum">4</span><span class="bloque-titles"><span class="bloque-title">Topes de campaña</span><span class="bloque-sum" id="sumTopes">Acuerdo de precampaña y carpeta de topes en Drive</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-topes-body" role="region" aria-labelledby="b-topes-btn" hidden>
+        <section class="chat-sources bloque" id="b-topes" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-topes-btn" aria-expanded="false" aria-controls="b-topes-body"><span class="bnum">4</span><span class="bloque-titles"><span class="bloque-title">Topes de campaña</span><span class="bloque-sum" id="sumTopes">Acuerdo de precampaña y carpeta de topes en Drive</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-topes-body" role="region" aria-labelledby="b-topes-btn" hidden>
           <p class="intro">Acuerdos y montos de <span class="entName">la entidad</span> por etapa: precampaña, campaña y procesos históricos, sin mezclarlos.</p>
           <p class="small muted" style="margin-top:.8rem;line-height:1.7"><strong>Nota:</strong> los topes no están dentro del Acervo electoral organizado; están en su carpeta propia de Drive, «<a href="https://drive.google.com/drive/folders/1dUjol_T11rON3SvEY2ONiUUBYLNl8hz1" target="_blank" rel="noopener">Topes de gastos de precampaña — OPLE 2026-2027</a>» (29 PDF).</p>
           <div class="tabs" role="tablist" aria-label="Etapa del proceso">
@@ -462,7 +500,7 @@ ul.links li:last-child{border-bottom:none}
           </div>
         </section>
 
-        <section class="chat-sources bloque" id="b-exp"><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-exp-btn" aria-expanded="false" aria-controls="b-exp-body"><span class="bnum">5</span><span class="bloque-titles"><span class="bloque-title">Expedientes</span><span class="bloque-sum">Sentencias locales 02 y 03 por año · Búsqueda por folio</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-exp-body" role="region" aria-labelledby="b-exp-btn" hidden>
+        <section class="chat-sources bloque" id="b-exp" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-exp-btn" aria-expanded="false" aria-controls="b-exp-body"><span class="bnum">5</span><span class="bloque-titles"><span class="bloque-title">Expedientes</span><span class="bloque-sum">Sentencias locales 02 y 03 por año · Búsqueda por folio</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-exp-body" role="region" aria-labelledby="b-exp-btn" hidden>
           <p class="intro">Listado filtrado a <span class="entName">la entidad</span>. Sentencias locales (02 y 03) por año, con enlace a la carpeta de cada año; busca por folio y combina los filtros.</p>
           <div class="doc-list" id="expAcervo"></div>
           <form class="formgrid" id="expForm">
@@ -478,8 +516,9 @@ ul.links li:last-child{border-bottom:none}
       </section>
 
       <!-- ============ FUENTES ============ -->
-      <section id="fuentes" aria-labelledby="sourcesTitle">
+      <section id="fuentes" aria-labelledby="sourcesTitle" hidden>
         <div class="section-row"><div><p class="kicker">Consulta</p><h2 id="sourcesTitle">Fuentes y reglas</h2></div></div>
+        <p style="margin-top:.6rem"><button class="btn-ghost" id="btnFuentesBack" type="button">← Volver al mapa</button></p>
         <div class="chat-sources">
           <p class="chat-review-scope">Única fuente de topes: inventario verificado el 20 de noviembre de 2026 sobre la carpeta de Drive «Topes de gastos de precampaña — OPLE 2026-2027» (29 PDF: 28 locales + 1 federal) y el resumen de cobertura de 16 páginas con el mismo corte. Los montos locales por cargo no se transcribieron: donde el monto no se ha leído en el PDF oficial, la ficha dice «por verificar en PDF oficial». Las ventanas previstas de las 10 entidades pendientes provienen del anexo del acuerdo INE/CG480/2026, hoja «Calendarios de Coordinación». Esta página es una calca lista para integrar con el sistema de diseño de DJF (judicial.css / MorenAI); no es un despliegue en DJF ni en atlas-web.</p>
           <div class="source-links">
@@ -737,14 +776,48 @@ loadMap();
 /* ---------- selector de vistas: mapa / general / particular ---------- */
 var viewPanels = { mapa: $("vistaMapa"), general: $("vistaGeneral"), particular: $("vistaFicha") };
 var viewTabBtns = Array.prototype.slice.call(document.querySelectorAll(".view-tab"));
-function showView(name){
-  if(name === "particular" && !current) name = "mapa";
-  Object.keys(viewPanels).forEach(function(k){ if(viewPanels[k]) viewPanels[k].hidden = k !== name; });
+var currentStep = "welcome";
+var currentDetail = null;
+function goStep(step, detailId){
+  if(step === "particular") step = "ficha";
+  if(step === "ficha" && !current) step = "mapa";
+  if(step === "detalle" && !current) step = "mapa";
+  currentStep = step;
+  if(detailId) currentDetail = detailId;
+  var panels = { welcome: $("stepWelcome"), mapa: $("vistaMapa"), general: $("vistaGeneral"), ficha: $("vistaFicha"), detalle: $("vistaFicha"), fuentes: $("fuentes") };
+  Object.keys(panels).forEach(function(k){ if(panels[k]) panels[k].hidden = true; });
+  var activePanel = panels[step];
+  if(activePanel) activePanel.hidden = false;
+  var tabs = $("viewTabs");
+  if(tabs) tabs.hidden = !(step === "mapa" || step === "general" || step === "ficha" || step === "detalle");
+  var tabName = step === "detalle" ? "particular" : (step === "ficha" ? "particular" : step);
   viewTabBtns.forEach(function(b){
-    var active = b.getAttribute("data-view") === name;
+    var active = b.getAttribute("data-view") === tabName;
     b.setAttribute("aria-selected", String(active));
     b.tabIndex = active ? 0 : -1;
   });
+  var cards = $("fichaCards"), bar = $("detailBar"), volver = $("volverRow");
+  if(step === "ficha"){
+    if(cards) cards.hidden = false;
+    if(bar) bar.hidden = true;
+    if(volver) volver.hidden = false;
+    Array.prototype.forEach.call(document.querySelectorAll(".bloque"), function(s){ s.hidden = true; });
+    closeBloques();
+  } else if(step === "detalle"){
+    if(cards) cards.hidden = true;
+    if(bar) bar.hidden = false;
+    if(volver) volver.hidden = true;
+    Array.prototype.forEach.call(document.querySelectorAll(".bloque"), function(s){ s.hidden = s.id !== currentDetail; });
+    if(currentDetail) openBloque(currentDetail);
+  }
+  if(activePanel) activePanel.scrollTop = 0;
+  window.scrollTo(0,0);
+}
+function showView(name){
+  if(name === "mapa") goStep("mapa");
+  else if(name === "general") goStep("general");
+  else if(name === "particular") goStep("ficha");
+  else goStep(name);
 }
 function syncParticularTab(){
   var t = $("tab-particular");
@@ -909,19 +982,20 @@ function openFicha(code, scroll){
   $("sumTopes").textContent = d.status === "acuerdo" ? "Acuerdo localizado: " + d.acuerdo : "Pendiente · Ventana prevista: " + d.ventana;
   closeBloques();
   syncParticularTab();
-  showView("particular");
-  if(scroll) $("vistaFicha").scrollIntoView({behavior:"smooth", block:"start"});
+  var rootEl = $("chatRoot");
+  if(rootEl) rootEl.classList.add("chat-history-collapsed");
+  var ht = $("historyToggle"); if(ht) ht.setAttribute("aria-expanded","false");
+  goStep("ficha");
 }
-function resetConsulta(scroll){
-  current = null; sel.value = ""; syncParticularTab(); showView("mapa"); updateMapSelection(); markSideActive(); hideTooltip(); closeBloques();
-  if(scroll) $("mapaExp").scrollIntoView({behavior:"smooth", block:"start"});
+function resetConsulta(target){
+  current = null; currentDetail = null; sel.value = ""; syncParticularTab(); updateMapSelection(); markSideActive(); hideTooltip(); closeBloques();
+  goStep(target || "mapa");
 }
-$("btnVolver").addEventListener("click", function(){ resetConsulta(true); });
-$("clearMap").addEventListener("click", function(){ resetConsulta(true); });
-$("btnNueva").addEventListener("click", function(){ resetConsulta(false); window.scrollTo({top:0, behavior:"smooth"}); sel.focus(); });
+$("btnVolver").addEventListener("click", function(){ resetConsulta("mapa"); });
+$("clearMap").addEventListener("click", function(){ resetConsulta("mapa"); });
+$("btnNueva").addEventListener("click", function(){ resetConsulta("welcome"); });
 $("federalBtn").addEventListener("click", function(){
   var b = $("federalBox"); b.hidden = !b.hidden;
-  if(!b.hidden) b.scrollIntoView({behavior:"smooth", block:"nearest"});
 });
 Array.prototype.forEach.call(document.querySelectorAll(".tabs button"), function(b){
   b.addEventListener("click", function(){
@@ -984,6 +1058,7 @@ function openBloque(sectionId){
 }
 bloqueToggles.forEach(function(b){
   b.addEventListener("click", function(){
+    if(currentStep === "detalle"){ goStep("ficha"); return; }
     var willOpen = b.getAttribute("aria-expanded") !== "true";
     closeBloques();
     if(willOpen) setBloque(b, true);
@@ -994,9 +1069,7 @@ Array.prototype.forEach.call(document.querySelectorAll(".chips a"), function(a){
     var href = a.getAttribute("href");
     if(!href || href.charAt(0) !== "#") return;
     ev.preventDefault();
-    openBloque(href.slice(1));
-    var el = $(href.slice(1));
-    if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+    goStep("detalle", href.slice(1));
   });
 });
 
@@ -1004,18 +1077,31 @@ Array.prototype.forEach.call(document.querySelectorAll(".chips a"), function(a){
 Array.prototype.forEach.call(document.querySelectorAll("[data-goto-block]"), function(b){
   b.addEventListener("click", function(){
     var target = b.getAttribute("data-goto-block");
-    if(target==="mapaExp"){ resetConsulta(true); return; }
-    if(!current){
-      $("mapaExp").scrollIntoView({behavior:"smooth", block:"start"});
-      sel.focus();
-      return;
-    }
-    showView("particular");
-    openBloque(target);
-    var el = $(target);
-    if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+    if(target==="mapaExp"){ resetConsulta("mapa"); return; }
+    if(!current){ goStep("mapa"); return; }
+    goStep("detalle", target);
   });
 });
+/* ---------- navegacion por pasos: una sola seccion a la vez ---------- */
+function bindToggle(btnId, panelId){
+  var btn = $(btnId), panel = $(panelId);
+  if(!btn || !panel) return;
+  btn.addEventListener("click", function(){
+    panel.hidden = !panel.hidden;
+    btn.setAttribute("aria-expanded", String(!panel.hidden));
+    btn.textContent = panel.hidden ? btn.textContent.replace("Ocultar","Ver") : btn.textContent.replace("Ver","Ocultar");
+  });
+}
+bindToggle("covToggle","covWrap");
+bindToggle("salasToggle","salasYears");
+bindToggle("dofToggle","dofYears");
+var btm = $("btnToMap"); if(btm) btm.addEventListener("click", function(){ goStep("mapa"); });
+var btg = $("btnToGeneral"); if(btg) btg.addEventListener("click", function(){ goStep("general"); });
+var btf = $("btnToFuentes"); if(btf) btf.addEventListener("click", function(){ goStep("fuentes"); });
+var bfb = $("btnFuentesBack"); if(bfb) bfb.addEventListener("click", function(){ goStep("mapa"); });
+var bbc = $("btnBackCards"); if(bbc) bbc.addEventListener("click", function(){ goStep("ficha"); });
+var bdm = $("btnDetailToMap"); if(bdm) bdm.addEventListener("click", function(){ resetConsulta("mapa"); });
+goStep("welcome");
 </script>
 </body>
 </html>
