@@ -524,7 +524,7 @@ body{height:100dvh}
         </div>
 
         <div class="chat-suggestions" role="group" aria-label="Accesos de la ficha">
-          <button type="button" data-goto-block="b-eyo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5l-2 3Zm5 3h4M12 2v2M12 8v4m0 2v.1"/></svg><span>1 · Errores y Omisiones<small>Oficios UTF · Informe anual 2025 · 1V 4/32 · 2V 8/32</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
+          <button type="button" data-goto-block="b-eyo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5l-2 3Zm5 3h4M12 2v2M12 8v4m0 2v.1"/></svg><span>1 · Errores y Omisiones<small>Oficios UTF · Informe anual 2025 · 1V 32/32 · 2V 32/32</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
           <button type="button" data-goto-block="b-norm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5v19h14V3h-3M9 2h6v4H9zM8 17v-3m4 3v-6m4 6V9"/></svg><span>2 · Normatividad<small>Normatividad local del estado · Carpeta 05 del Acervo</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
           <button type="button" data-goto-block="b-ople"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v17M6 20h12M4 7h16M6 7l-3 6h6zm12 0-3 6h6z"/></svg><span>3 · OPLE<small>Instituto electoral local, acuerdos y estrados</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
           <button type="button" data-goto-block="b-topes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V3m0 1h12l-3 4 3 4H6M3 21h6"/></svg><span>4 · Topes de campaña<small>Acuerdos y montos por proceso, cargo y demarcación</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
@@ -534,10 +534,11 @@ body{height:100dvh}
 
         <div id="detailBar" hidden><button class="btn-ghost" id="btnBackCards" type="button">← Volver a las tarjetas</button><button class="btn-ghost" id="btnDetailToMap" type="button">Volver al mapa</button></div>
 
-        <section class="chat-sources bloque" id="b-eyo" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-eyo-btn" aria-expanded="false" aria-controls="b-eyo-body"><span class="bnum">1</span><span class="bloque-titles"><span class="bloque-title">Errores y Omisiones</span><span class="bloque-sum">Oficios UTF · Informe anual 2025 · 1V 4/32 · 2V 8/32</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-eyo-body" role="region" aria-labelledby="b-eyo-btn" hidden>
-          <p class="intro">Oficios notificados por la Unidad Técnica de Fiscalización (UTF) a <span class="entName">la entidad</span> — Informe Anual 2025, primera y segunda vuelta. Esta sección contiene únicamente los oficios de la UTF.</p>
+        <section class="chat-sources bloque" id="b-eyo" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-eyo-btn" aria-expanded="false" aria-controls="b-eyo-body"><span class="bnum">1</span><span class="bloque-titles"><span class="bloque-title">Errores y Omisiones</span><span class="bloque-sum">Oficios UTF · Informe anual 2025 · 1V 32/32 · 2V 32/32</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-eyo-body" role="region" aria-labelledby="b-eyo-btn" hidden>
+          <p class="intro">Oficios notificados por la Unidad Técnica de Fiscalización (UTF) a <span class="entName">la entidad</span> — Informe Anual 2025, primera y segunda vuelta. Esta sección contiene los oficios de la UTF y el dictamen consolidado del mismo procedimiento.</p>
           <div id="eyoContent"></div>
-          <p class="small muted" style="margin-top:1rem;line-height:1.7">Cobertura verificada en Drive: primera vuelta, 4 de 32 entidades; segunda vuelta, 8 de 32; 9 entidades con al menos un oficio localizado.</p>
+          <div id="eyoFederal"></div>
+          <p class="small muted" style="margin-top:1rem;line-height:1.7">Cobertura verificada en Drive (copia «IA 2025 - Copia de las tres carpetas», corte 20 de noviembre de 2026): primera vuelta, 32 de 32 entidades + ámbito federal; segunda vuelta, 32 de 32 entidades + ámbito federal; dictamen consolidado en 31 de 33 ámbitos (sin dictamen localizado: Estado de México y Tamaulipas, carpetas vacías).</p>
           </div>
         </section>
 
@@ -806,42 +807,113 @@ function topesFolderLink(d){
   return '<div class="doc-list">' + docLink(drv(TOPESF[d.code]), "Drive · Carpeta de topes", "Carpeta de topes de " + d.name, d.status === "pendiente" ? "Carpeta de la entidad en Drive (vacía al corte: sin acuerdo localizado)" : "Carpeta de la entidad en Drive, con el acuerdo de topes y sus anexos en PDF") + '</div>';
 }
 
-/* ---------- Errores y Omisiones: oficios UTF, Informe Anual 2025 (verificado en Drive) ---------- */
+/* ---------- Errores y Omisiones: oficios UTF y dictamen consolidado, Informe Anual 2025 (inventario verificado en Drive: copia «IA 2025 - Copia de las tres carpetas») ---------- */
 function fileUrl(id){ return "https://drive.google.com/file/d/"+id+"/view?usp=drivesdk"; }
+/* Oficios por vuelta: número leído del encabezado del .docx de la copia. 1V: todos del 31 de julio de 2026. 2V: todos del 21 de septiembre de 2026. */
 var EYO_UTF = {
-  22:{v1:{label:"INE-UTF-DA-12108-2026",type:"PDF",id:"1TEPExIsJ9rr0ya2MtCFk7V2ZdpYbxOnp"},v2:{label:"INE-UTF-DA-13731-2026",type:"DOCX",id:"1mWKeBuOkNW_yZP451rKCgLom2lz6mT9H"}},
-  23:{v1:{label:"INE-UTF-DA-12380-2026",type:"PDF",id:"1DsWOh8kW6mpg9JAqRAgUNLSpYjm_TM6X"},v2:{label:"INE-UTF-DA-13450-2026",type:"PDF",id:"1foYL-p1PaRu5HuJRPlbQiSWzUsJIeXe0"},pkg2:"1p0k2fZBeJlO2-eSEwYHL5xuGYwBrEe6o"},
-  24:{v1:{label:"INE-UTF-DA-11991-2026",type:"PDF",id:"10QbSyFyQdnOAAlawADwuLj2zDEGvZLWR"},v2:{label:"INE-UTF-DA-13473-2026",type:"PDF",id:"1MylUTIZZ67Gg66i1Z76Zf2OHowjao79S"},pkg2:"1QE-SETaKXdPutVJrNFUCDGZhRlrXkQ6p"},
-  29:{v1:{label:"Oficio_INE_Tlaxcala_1V",type:"PDF",id:"1tc56ZJ3dIQQNn0EIPpeaAK827zMcFAyo"}},
-  14:{v2:{label:"03_Oficio_INE_2V_IA25_JAL_2026.pdf",type:"PDF",id:"1Er9y2dHGqZwBwpObvQQfrAPInUH7KAbv"},pkg2:"1Y3GLCM5_jhWAEsirAtFeunq0NjgQdjMk"},
-  9:{v2:{label:"03_Oficio_INE_2V_IA25_CDMX_2026.pdf",type:"PDF",id:"1j9ZZ9A-s5tS7UXQfks12T_hfoQahRZ3W"},pkg2:"1Kbj_fizB4WFL8STNdBU1N5XZoYIDXPHp"},
-  12:{v2:{label:"03_Oficio_INE_2V_IA25_GRO_2026.pdf",type:"PDF",id:"1ksqaouDa9Ht9cFDAipJdvsyZVs5h5yTZ"},pkg2:"1XKdXF_qqqzKmlhph9tMuUqwAhymlJ2JG"},
-  13:{v2:{label:"Oficio_INE_Hidalgo_2V_INE_UTF_DA_13249_2026.pdf",type:"PDF",id:"18uiUmPtD3mlLYOhr2HVfdPqK_ZcYMOcC"},pkg2:"1BUpBnSqmh0MjX8pCAjpkPcuSkj1-ka-W"},
-  19:{v2:{label:"Oficio_INE_UTF_DA_13595_2026_Nuevo_Leon.pdf",type:"PDF",id:"18HaVV8H7kgTigb8jhYHh94ZoCNa9aY7m"},pkg2:"1QUMwvJpxjcwJonNyARYpO6O5QkEVPbv9"}
+  fed:{v1:{n:"11948",id:"1Iuyv8j_jyhqAmWfF2rqujY0GC7CFYfO5"},v2:{n:"13116",id:"1PmrJEQv_ILXs5wK7P1huLx-PFb-UeBgy"}},
+  1:{v1:{n:"11907",id:"1WOb6Y2M1MVKK2eiGIzY7DidE_YLaavaZ"},v2:{n:"13128",id:"1cDD5_Dq8_KGy5hqZXNL3qBx5_tBZ3-9r"}},
+  2:{v1:{n:"11969",id:"1BRqivaa45FVjcI6Ln-blWDBN5aHIOhLi"},v2:{n:"13608",id:"1928k7lZgyNuYCo_UK2dgw5tC_-Kgg6Np"}},
+  3:{v1:{n:"12092",id:"1Uhs85d2HwbvSfYoz_nPeqT_m3hBnjJ1n"},v2:{n:"13683",id:"1W05MBqw4htL0gcOweJMt3mfipttc0RRS"}},
+  4:{v1:{n:"11042",id:"1CtadOxm6mPcFKZYQ2zoFS3aajZB3a1fx"},v2:{n:"13214",id:"1wVCXGWqBP_MgWpx0PpgI9TP5jisfWkKG"}},
+  5:{v1:{n:"11892",id:"1RI9onhhjLyOS8xE8eI2LlVE_2Lhr3rfz"},v2:{n:"13300",id:"1n4QWYc23QTvVDLUnUvECv0j7lhI9-MWi"}},
+  6:{v1:{n:"11788",id:"1eaySxvMnf-mUMcb9BoeidyHw6W3ob_xM"},v2:{n:"13534",id:"1HUM6-xX2K5tklMU6obI4itGvwYMqFjlB"}},
+  7:{v1:{n:"12011",id:"1HdPpQ15pIW1172oaQany8jfDo7e3-RUD"},v2:{n:"13833",id:"1vHlBpZtxMNfle7BMocKnicGyjNI_pZjS"}},
+  8:{v1:{n:"11144",id:"1GepIHmSkajg-0Vs7Xw-yOA9DF7C1l4z2"},v2:{n:"13360",id:"1cNb2Uaobx04EP_Dbz8q6oz4Z8ykfB6qR"}},
+  9:{v1:{n:"11641",id:"1lfHJ0ZCMQcC5C093ze-hZDofawmz_WVC"},v2:{n:"13724",id:"1q8eFyRKNp3W7er7pwq-WXZ0-LJO6eeIj"}},
+  10:{v1:{n:"11935",id:"1C3KlhlD9ZjJIW0fsqcC9aumarA0NQAuq"},v2:{n:"13673",id:"1TAeI1LI5AzbFr-2r9egJ5Q2tjX0W_0S_"}},
+  11:{v1:{n:"11928",id:"1mdd87k64HXJnhsxxw2ZBmZlqVkuRXsQj"},v2:{n:"13797",id:"1pYkxser1e-nTxD2Cv9YTERzhZUfUu6ni"}},
+  12:{v1:{n:"11297",id:"1LT6083dAYn4j1rheAPKg388_lfi36fHk"},v2:{n:"13653",id:"1Bswr6u_vHV8DvhqhlhG2Xm7aDtP_hj_o"}},
+  13:{v1:{n:"11014",id:"1b5gYA3PTEWtHIo0yXFxciWmMFG78zluN"},v2:{n:"13249",id:"1-JEW44xRAuntIvujNPNjohFRwdjo6FyF"}},
+  14:{v1:{n:"11208",id:"1DhT5zi3jWhuNLKSXllkSjNxNDo1es1z4"},v2:{n:"13438",id:"1xO_aSR1QpHSz85Z3SpYzHo2dN-eou3a2"}},
+  15:{v1:{n:"12088",id:"1TY6Ju6kgtr8Tie7LQfDzTUp6f9tfiGf2"},v2:{n:"13809",id:"1T4-EMKWAuob6u0G68YzTALrHFGbQC1M0"}},
+  16:{v1:{n:"12041",id:"1TMBIR_HkBa5WMDBapOOmV8LK5VfaaD79"},v2:{n:"13718",id:"1A8n_pn3QvCvGiHFnxaYpWjlHqkJzzu_r"}},
+  17:{v1:{n:"11616",id:"1W9o23FY3n6CVJdG0FbvfVv8aKyoGta7g"},v2:{n:"13063",id:"1qxo5Tjbb-FdmAelw_QXVy6Pz39TN6qX0"}},
+  18:{v1:{n:"11135",id:"1636NA1g8W-NSCNstQJxoejkT3SiD6sUG"},v2:{n:"13460",id:"1ZwV7JEbayt5ruwBtQpnhSijpHFilcdlu"}},
+  19:{v1:{n:"11962",id:"1r0GJ21e_zcu7BOuiJKfMGSVM3uc5PzV-"},v2:{n:"13595",id:"1z1bxDpr4OtxRqTe9gwkLsF47e9XLkmID"}},
+  20:{v1:{n:"8743",id:"16DuHU9nP5_Vdd0TYkj1VGMGMZjVRtKWx"},v2:{n:"13705",id:"1DLy0DopGaM6wxMbi-Gh8mBBky4DwbIW8"}},
+  21:{v1:{n:"11870",id:"1-3VUEIr8gkmW_1BhkMDzuYWCe8Zykl1d"},v2:{n:"13427",id:"1PTB6LmfCpF-Sb_gvjNAsWxbLy1Ts7p26"}},
+  22:{v1:{n:"12108",id:"13zE42RnCTKMAfM2uX7JrdZeIwKhEwKWb"},v2:{n:"13731",id:"14CRL9OidEtXl6UmM0Ey-K1gsblBkE63N"}},
+  23:{v1:{n:"12380",id:"1e5vFmCGRJ4WtuOaJvxD4cPYnoi9RtgAa"},v2:{n:"13450",id:"1cZLVyYOMcScegGXqo7vx-ZvYTU-zEAlM"}},
+  24:{v1:{n:"11991",id:"1DSST2T24mXAuegyk3poNuYghqtKNdnxz"},v2:{n:"13473",id:"1Nb33pOvgjShg04w-jyJbeUfMCul1nrr_"}},
+  25:{v1:{n:"11306",id:"172dvXmiL8OW6n8xu0AuCZbUncMCGx8xj"},v2:{n:"13328",id:"1tLtHXYGjLQw2dbdZoLQdaaBk_ikaijJA"}},
+  26:{v1:{n:"11881",id:"1gVYL0JAtc0zoZrjuc6cznCINNnJtY51f"},v2:{n:"13747",id:"1fkfRlSoxbOo5x96ofDt_rYR29tQhaFSg"}},
+  27:{v1:{n:"12006",id:"1kw2hljaMkpINw4u6KZz8sFae9yC1aKod"},v2:{n:"13818",id:"1vIO8VC8d9C27fiF4FokyrUUhgso0pZtB"}},
+  28:{v1:{n:"12074",id:"1gHFoD6L7SBbAk5RA4GOcPPqT6dyEMDQw"},v2:{n:"13769",id:"1Ud0U6irvs3x_eRPk25ZDrONM8BcKr7yf"}},
+  29:{v1:{n:"12117",id:"1uBxmbQ4p7YtZGi1CzKxB_7y3-NnVVgOp"},v2:{n:"13619",id:"1WQ3gPiGldGED7DeR-sZxNyMo1puDNnFB"}},
+  30:{v1:{n:"11956",id:"1px1g6GGditj43MoIlb-IRqRb4CEgc4lU"},v2:{n:"13787",id:"1O20ybzHvUYUzwx3OhptgtDXeADwY4Qit"}},
+  31:{v1:{n:"11193",id:"1enfslx11ssW-xbzljknA2q4QF3kFU3Nf"},v2:{n:"13054",id:"1oo_9eNFqNEHJMxNMpMF5WQXO8DqJOWsu"}},
+  32:{v1:{n:"11174",id:"1fq5nJ2jI74fS3kasUFD1jEur7POZXJlg"},v2:{n:"13350",id:"1NAAuacMhXEvUe7GJSl_hCHUACsq4xXSn"}}
 };
-function eyoVueltaHtml(oficio, pkgId, vueltaLabel, badge){
-  if(!oficio){
-    return '<div class="empty"><p>Aún no hemos localizado un oficio de la UTF para esta entidad en esta vuelta.</p></div>';
-  }
-  var html = '<div class="doc-list">'
-    + docLink(fileUrl(oficio.id), badge, oficio.label, "Oficio de la UTF · " + oficio.type + " — abrir archivo en Drive")
+/* Dictamen Consolidado por ámbito: no trae número INE/UTF/DA propio. Sin entrada = no localizado (Estado de México y Tamaulipas: carpetas vacías en la copia). */
+var EYO_DIC = {
+  fed:"1GFBKd5O97wy-Mal2ZJqpVyIRQQ7w9G26",
+  1:"1UD8j4UovPkd0vEJP9U1gImObgTTChScm",
+  2:"1-cvQqaLJBDF3BkJd8cijtkqNuocwgEwM",
+  3:"1dDHOVgM1vIF9O35RO3kICEuA9H2N7Gdn",
+  4:"14Mx5iHh4P1rFTTVWiDnArx8Y_IISAIhU",
+  5:"1rlN051dsOB24_0CkXJ05Il9vP5vCumLs",
+  6:"1w_EeILSu9GHYpfPdCirOperH39V_Kdk_",
+  7:"1vqc_ICbKQnWdNsDFKV5iGEqSRtm_LbOG",
+  8:"1JyXzPYKS6h8HO7iLI-hFjtcQysESS_Lh",
+  9:"1Waw3o4CAIqIu51L-tTPbvgBWuSY1YQjz",
+  10:"1vXnTyS5KBi5wcMeQOnprNAEEVHcBt_Jr",
+  11:"1TUz2StdeqvV4vxFZgYkxCBMSypwdrHWn",
+  12:"1J0PtjM-I7Dmqd5OaRdbUmC6K64OHZO2a",
+  13:"1kmmXQqaPUiZXtGujzu-cgU7c0QpzeDT6",
+  14:"1keZ0wZaDAZowE5q-09-wZmp_V9hVNsRk",
+  16:"1o2FGMotl5NwUF7muL3kgZnvg6HMnpSkA",
+  17:"1x90vWDdmZl_qIFVsHNNfB1mqLSR0-PEt",
+  18:"12RNS9wXfAzmp-BTRWATve5jDW_wK9G3Y",
+  19:"1Zce7k50srjObVh9WF3ir81I3pooHdsZV",
+  20:"1jVT1Y81AWN_0Gf960qDWybK4YtpLAZs5",
+  21:"1pHXMusu_reQpi2J9H0JnypZu5-q4jLMZ",
+  22:"1EOwaodooXcgmyK0ovJIv1QLRO5nAsC7r",
+  23:"10nTxnhTgF16bgMzSFo0281uv4SraoLPs",
+  24:"1Msk_yrUEvbIDY1Uf3CWMAV29f8ePWUyg",
+  25:"1BcdP6-GD1pROhcJfsIYnP7HwNmPFiV1e",
+  26:"1KjcAqF1LYctuuYB5UgGC65cw58MZ42_r",
+  27:"10D842r5hcq48QzNR1sTIWpcaJfSn71HX",
+  29:"11JY8d5o2Unr0rFIg-Nw-Z2HVM6Y1Jizn",
+  30:"1lXen7WeqXPYYV4lchY64ctA4ZUbbAbO1",
+  31:"1-FQ8DYeViRLYbpPTzmtfsCmn00-VpUdB",
+  32:"1ApLhbiJSMnW0fXX7DzLurwHwzdwNiub5"
+};
+function eyoOficioHtml(oficio, badge, fecha){
+  return '<div class="doc-list">'
+    + docLink(fileUrl(oficio.id), badge, "INE/UTF/DA/" + oficio.n + "/2026", "Oficio de la UTF · DOCX · " + fecha + " — abrir archivo en Drive")
     + '</div>';
-  if(pkgId){
-    html += '<div class="doc-list">'
-      + docLink(drv(pkgId), "UTF · Paquete " + vueltaLabel, "Carpeta del paquete de " + vueltaLabel.toLowerCase(), "Carpeta en Drive con el paquete completo de la vuelta")
-      + '</div>';
+}
+function eyoDicHtml(id){
+  if(!id){
+    return '<div class="empty"><p>No se localizó el dictamen consolidado de esta entidad en la copia del acervo.</p></div>';
   }
-  return html;
+  return '<div class="doc-list">'
+    + docLink(fileUrl(id), "UTF · Informe Anual 2025 · Dictamen", "Dictamen Consolidado", "Dictamen consolidado de la revisión del Informe Anual 2025 · DOCX — abrir archivo en Drive")
+    + '</div>';
 }
 function renderEyo(d){
   var box = $("eyoContent");
   if(!box) return;
   var e = EYO_UTF[d.code] || {};
   box.innerHTML =
-      '<h4 class="eyo-vuelta">Primera vuelta</h4>' + eyoVueltaHtml(e.v1, null, "Primera vuelta", "UTF · Informe Anual 2025 · 1V")
-    + '<h4 class="eyo-vuelta">Segunda vuelta</h4>' + eyoVueltaHtml(e.v2, e.pkg2, "Segunda vuelta", "UTF · Informe Anual 2025 · 2V");
+      '<h4 class="eyo-vuelta">Primera vuelta</h4>' + eyoOficioHtml(e.v1, "UTF · Informe Anual 2025 · 1V", "31 de julio de 2026")
+    + '<h4 class="eyo-vuelta">Segunda vuelta</h4>' + eyoOficioHtml(e.v2, "UTF · Informe Anual 2025 · 2V", "21 de septiembre de 2026")
+    + '<h4 class="eyo-vuelta">Dictamen Consolidado</h4>' + eyoDicHtml(EYO_DIC[d.code]);
 }
-
+function renderEyoFederal(){
+  var box = document.getElementById("eyoFederal");
+  if(!box) return;
+  var e = EYO_UTF.fed;
+  box.innerHTML =
+      '<h4 class="eyo-vuelta">Ámbito federal (CEN)</h4>'
+    + '<div class="doc-list">'
+    + docLink(fileUrl(e.v1.id), "UTF · Informe Anual 2025 · 1V", "INE/UTF/DA/" + e.v1.n + "/2026", "Oficio de la UTF · DOCX · 31 de julio de 2026 — abrir archivo en Drive")
+    + docLink(fileUrl(e.v2.id), "UTF · Informe Anual 2025 · 2V", "INE/UTF/DA/" + e.v2.n + "/2026", "Oficio de la UTF · DOCX · 21 de septiembre de 2026 — abrir archivo en Drive")
+    + docLink(fileUrl(EYO_DIC.fed), "UTF · Informe Anual 2025 · Dictamen", "Dictamen Consolidado", "Dictamen consolidado de la revisión del Informe Anual 2025 · DOCX — abrir archivo en Drive")
+    + '</div>';
+}
+renderEyoFederal();
 var current = null, currentTab = "pre", currentCargo = "G", mapLoaded = false, mapFilter = "todos";
 var $ = function(id){ return document.getElementById(id); };
 function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
