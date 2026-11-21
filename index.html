@@ -228,6 +228,21 @@ ul.links li:last-child{border-bottom:none}
 .field select,.field input{width:100%;border:1px solid #d9cbd2;border-radius:.5rem;background:#fff;color:#2e292c;padding:.6rem .65rem;font-size:.9rem;max-width:100%;min-height:2.75rem}
 @media(min-width:48rem){.formgrid{grid-template-columns:2fr 1fr 1fr 1fr auto;align-items:end}}
 
+/* ===== Planes, numeralia y plataformas 2026–2027 ===== */
+.planes-card{border:1px solid var(--chat-line);border-radius:.65rem;background:#faf6f8;padding:1rem;margin-top:1rem}
+.planes-card>h3{font-size:.95rem;line-height:1.5;color:#2e292c}
+.planes-card>p{font-size:.8rem;line-height:1.7;color:#4c3541;margin-top:.4rem}
+.planes-links{display:grid;gap:.6rem;margin-top:.8rem}
+@media(min-width:36rem){.planes-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.planes-links .document-link{margin-top:0;background:#fff}
+.planes-status{margin-top:1rem;border-top:1px solid var(--chat-line);padding-top:.9rem}
+.planes-status>h4{font-size:.85rem;line-height:1.5;color:var(--chat-wine)}
+.planes-status>p{font-size:.78rem;line-height:1.7;color:#72666e;margin-top:.35rem}
+.planes-status dl{margin:.8rem 0 0;display:grid;gap:.7rem}
+.planes-status dt{font-size:.8rem;font-weight:700;color:#4c3541}
+.planes-status dd{margin:.2rem 0 0;font-size:.8rem;line-height:1.7;color:#2e292c}
+.fed-scope{margin-top:1rem}
+
 /* ===== fuentes y pie ===== */
 .source-links{display:grid;gap:.6rem;margin-top:1rem}
 @media(min-width:36rem){.source-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -240,8 +255,8 @@ ul.links li:last-child{border-bottom:none}
 .site-footer>p{font-size:.7rem;line-height:1.6;color:#2e292c}
 .site-footer>p span{display:block;color:#766972}
 .site-footer>a{font-size:.72rem;font-weight:600;margin-left:auto}
-.map-tooltip{position:fixed;max-width:20rem;background:var(--chat-wine);color:#fff;padding:.8rem 1rem;border-radius:.65rem;box-shadow:0 5px 22px #45253522;font-size:.72rem;line-height:1.6;z-index:20;pointer-events:none}
-.map-tooltip strong{font-size:.82rem;display:block;margin-bottom:.3rem}
+.map-tooltip{position:fixed;max-width:20rem;background:#6d1738;background-color:#6d1738;opacity:1;color:#fff;padding:.8rem 1rem;border-radius:.65rem;box-shadow:0 5px 22px #45253555;font-size:.72rem;line-height:1.6;z-index:20;pointer-events:none}
+.map-tooltip strong{font-size:.82rem;display:block;margin-bottom:.3rem;color:#fff;opacity:1}
 
 /* ===== móvil estilo DJF (@media 850px de judicial.css) ===== */
 @media(max-width:850px){
@@ -345,8 +360,6 @@ body{height:100dvh}
     <aside id="chatHistory" class="chat-history" aria-label="Panel de entidades">
       <div class="chat-history-panel">
         <div class="chat-history-head"><h2>Consulta por entidad</h2><button type="button" id="historyClose" class="side-close" aria-label="Ocultar el panel de entidades" title="Ocultar el panel de entidades"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5l-7 7 7 7M19 5l-7 7 7 7"/></svg><span>Ocultar</span></button></div>
-        <label for="selEntidad">Entidad federativa</label>
-        <select id="selEntidad" aria-label="Seleccionar entidad federativa"><option value="">Todas las entidades — elige una para abrir su ficha</option></select>
         <nav aria-label="Entidades federativas"><ol class="side-list" id="entList"></ol></nav>
       </div>
       <p class="chat-private">El color indica si ya se localizó el acuerdo de topes de gastos de precampaña del OPLE. Corte: 20 de noviembre de 2026.</p>
@@ -406,6 +419,10 @@ body{height:100dvh}
             <span class="stat-chip" role="listitem"><b>29</b> PDF vinculados</span>
             <span class="stat-chip" role="listitem"><b>54 / 80</b> combinaciones ámbito–cargo</span>
           </div>
+          <div class="fed-scope">
+            <a class="document-link" href="https://drive.google.com/drive/folders/1nhsyw0iOftgt1yTT_bkdwJkb8VnnoKjn" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Ámbito federal · INE</span>Plan y calendario federal (INE)<small>Carpeta «INE — Nacional y federal» del proyecto «Elecciones 2026-2027 — Planes, numeralia y plataformas»</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
+            <p class="small muted" style="margin-top:.5rem;line-height:1.7">Alcance del acervo de planes, numeralia y plataformas: <strong>32 entidades + 1 elección federal</strong>. El plan de cada entidad está en su ficha, dentro del bloque «OPLE».</p>
+          </div>
           <div class="gen-controls">
             <div class="field"><label for="genSearch">Buscar entidad</label><input type="search" id="genSearch" placeholder="Escribe el nombre de la entidad…" autocomplete="off"></div>
             <div class="filtros" id="genFiltros" role="group" aria-label="Filtrar entidades por acuerdo de precampaña">
@@ -439,6 +456,24 @@ body{height:100dvh}
             <a class="document-link" href="https://drive.google.com/drive/folders/1QyzX3VyWQthBDo6qQ4lkpArPeYNl2JZd" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Acervo · 08</span>Publicaciones de los 32 OPLE<small>32 de 32 OPLE, con siglas en el nombre de carpeta</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
             <a class="document-link" href="https://drive.google.com/drive/folders/1r29PHpyg9MCujURiNg0MUEOsJMr2CRhR" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Acervo · 09</span>Diario Oficial de la Federación — materia electoral<small>Por año, 1917-2026 (101 ítems directos)</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
             <a class="document-link" href="https://drive.google.com/drive/folders/1d7lMYxsp9PAmDcFNdMf9oAUbbgq5Wmtm" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Acervo · 10</span>Incorporaciones verificadas<small>7 carpetas temáticas</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
+          </div>
+          <div class="planes-card" id="planesCard">
+            <span class="source-badge">Proyecto · Elecciones 2026–2027</span>
+            <h3>Planes, numeralia y plataformas 2026–2027</h3>
+            <p>Seguimiento de los planes, la numeralia y las plataformas electorales del proceso 2026–2027. Alcance del acervo: <strong>32 entidades + 1 elección federal</strong>; cada ficha de entidad enlaza a su subcarpeta desde el bloque «OPLE».</p>
+            <div class="planes-links">
+              <a class="document-link" href="https://drive.google.com/file/d/1gpHUDiUrly6hhPqN05cX7ih7Zf25Hnmw/view?usp=drivesdk" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Drive · PDF</span>Abrir PDF de seguimiento<small>Planes, numeralia y plataformas 2026-2027 (PDF en Drive)</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
+              <a class="document-link" href="https://drive.google.com/drive/folders/1zGO2CZ7Xg3PDcC9xNmnmCoFjga-G4XBu" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Drive · Carpeta del proyecto</span>Abrir carpeta del proyecto<small>«Elecciones 2026-2027 — Planes, numeralia y plataformas»: 32 entidades + ámbito federal</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
+            </div>
+            <div class="planes-status">
+              <h4>Estado de publicación (página 3 del PDF)</h4>
+              <p>Corte: 20 de noviembre de 2026. <a href="https://drive.google.com/file/d/1gpHUDiUrly6hhPqN05cX7ih7Zf25Hnmw/view?usp=drivesdk" target="_blank" rel="noopener">Consultar la página 3 en el PDF de seguimiento ↗</a> — el enlace abre el mismo PDF en Drive, por lo que sus actualizaciones se reflejan sin volver a desplegar esta página.</p>
+              <dl>
+                <div><dt>Plazo de solicitud</dt><dd>Ventana abierta en <strong>5 de 32</strong> entidades: Aguascalientes, Chihuahua, Nuevo León, Tamaulipas y Veracruz. Las otras <strong>27</strong> todavía no la iniciaban y <strong>ninguna</strong> la había cerrado al corte. El registro federal está programado del <strong>15 al 30 de enero de 2027</strong>.</dd></div>
+                <div><dt>Registro aprobado</dt><dd>La aprobación y la publicación de los textos se verifican por separado. El calendario de <strong>Oaxaca</strong> fue aprobado el <strong>7 de septiembre de 2026</strong> (acuerdo <strong>IEEPCO-CG-31/2026</strong>). <strong>Puebla</strong> y <strong>Zacatecas</strong> están pendientes: acuerdo no localizado al corte.</dd></div>
+                <div><dt>Texto de la plataforma publicado</dt><dd>Al corte <strong>no hay texto de plataforma publicado</strong>: las plataformas partidistas siguen plazos posteriores.</dd></div>
+              </dl>
+            </div>
           </div>
           <div class="doc-list">
             <a class="document-link" href="https://drive.google.com/file/d/1r5-qXnOcWLAu7Yl7B3VsRngV3BbnrLl0/view?usp=drivesdk" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Acervo · Índice 05</span>INDICE_05_Normativa_local.csv<small>Índice de la normativa local de las 32 entidades</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
@@ -506,6 +541,7 @@ body{height:100dvh}
           <ul class="links">
             <li><strong>Sitio oficial y estrados</strong> — el INE mantiene el acceso verificado a la página de cada OPLE, donde se publican acuerdos y estrados electrónicos.<br><a href="https://portal.ine.mx/voto-y-elecciones/opl/oples-estados/" target="_blank" rel="noopener">Ir al directorio de OPLE del INE y abrir el sitio de <span class="entSiglas">la entidad</span></a> · <a href="https://portal.ine.mx/voto-y-elecciones/opl/" target="_blank" rel="noopener">Qué son los OPLE (INE)</a></li>
             <li><strong>Publicaciones en el Acervo</strong> — carpeta de la entidad en «08 Publicaciones de los 32 OPLE» (con las siglas del OPLE en el nombre), con enlace directo a la carpeta de cada año disponible, y el directorio oficial de los 32 OPLE:<div class="doc-list" id="opleCarpeta"></div></li>
+            <li><strong>Plan, numeralia y plataformas 2026–2027</strong> — plan, numeralia y plataformas del proceso 2026–2027 en la subcarpeta de <span class="entName">la entidad</span> dentro del proyecto «Elecciones 2026-2027 — Planes, numeralia y plataformas»:<div class="doc-list" id="oplePlanes"></div></li>
             <li><strong>Acuerdos de topes en el acervo</strong> — carpeta «Topes de gastos de precampaña — OPLE 2026-2027».<div class="doc-list" id="opleAcuerdos"></div></li>
             <li><strong>Carpeta completa del proyecto</strong> — las 33 subcarpetas (32 entidades + federal) y el resumen de cobertura de 16 páginas.<br><a href="https://drive.google.com/drive/folders/1dUjol_T11rON3SvEY2ONiUUBYLNl8hz1" target="_blank" rel="noopener">Abrir carpeta en Drive</a></li>
           </ul>
@@ -721,6 +757,17 @@ function yearsBlock(list, cap){
 }
 
 /* Carpetas de topes en Drive («Topes de gastos de precampaña — OPLE 2026-2027»): code -> ID de carpeta; fed = ámbito federal */
+/* Planes, numeralia y plataformas 2026–2027: code -> ID de subcarpeta de la entidad en «Elecciones 2026-2027 — Planes, numeralia y plataformas» */
+var PLANES = {
+  1:"1_Y42oa7_2MmR9dkgsB_xpzVxKEuBdFKM", 2:"1lZsBKQnrVWqaJsILIxPG8ZD7GfgAIWcU", 3:"1eavYYO5WpacALznJWHrd1cf44BJu1scC", 4:"1Oen5DkH2vcIUUWXxa_vpzHCCPXAbtUxn",
+  5:"1uxexsx7btuI-nMRtfQxYsdjJzP35bGNz", 6:"1x8VBSzpASqgeQcUOw289SGDDgZGTqd6V", 7:"15n82F-9tE_UI-3bSvlKEXXL7J_jvo7Jb", 8:"1Ax_fQ44j169K8g5pfJ0xcEyMPcYVZDbN",
+  9:"1I2wnUHBpWr9ipX24NsUqlMV1SfAbwBrh", 10:"1xh-fTRL_MluIYA02LyOQvC4rPM_k2c24", 11:"13lTA33daWRvgz9v7tZwZAa0MswtLEaPm", 12:"11rmnaMcwx2bPbjN9Qkcvo8NAfKaKuogA",
+  13:"1i2Vz2f4nUTiIr0YXOjDsqUX_gOVni1zF", 14:"1Qh3iIvW9P1u6NNxDvrzCzjJatpePct4f", 15:"1Lg-tv9DeuQGyNQYSsiuoZWfWaq5uJ2r_", 16:"1c6yMdtvsR08BmTRKxVLj8XUqcncKY3Z4",
+  17:"1zxBjdBlYCYdzUncjTb2k0L5L6v-uYgeB", 18:"1tsROSzxQC7K018c2u92DMlhkJwpAVmhh", 19:"11FTCpLuy_kHNr28JXb4gI2EVHY0k6eHf", 20:"1bXiVTaCTrwGIR9C2TONFdW4fjedlkTez",
+  21:"1yC43sJeOHHk7BYiubJDPWnyCm6IbS6yW", 22:"1EU3KsnrU2wpJNJp-KHl9O79F5WDG9fLK", 23:"12Fu-cuy_6WaseBDARF-OcyWbQT1L9N3S", 24:"15oVbjJ8BMamGzWdxSPzX3-iYwdHaBkWx",
+  25:"1OzBjBO9m_6-UGt_qEbkmhMJHGzhQ2TNq", 26:"1WrrTgCDRnQUvPUAJEeW21Q9JUZ8eG29Z", 27:"1yIlm7YKMKbzGgitc2bME311TT4LYws96", 28:"160zMATDOWxtYkPvQpPYDfnLXfMRa2q1i",
+  29:"1eY4VpBC63TtV41crtdn8qNVGSkJ3Ncj-", 30:"1ijAExUkLB0Q0S3gYZbtUGhF7sFYAboKF", 31:"1fkcJVXSqFIadIFL5uJ1RNJ5_Lt8Er3cM", 32:"1Wk8bRkPp3OW6CMa6X7-fTAUcu5zxtrLP"
+};
 var TOPESF = {
   fed:"1b9KvulMmhaCm4f2hydAe7BoShP4HO-4_",
   1:"1n3Afcz6UnZjY-KYQ60vhkoi2vYu-K3-g", 2:"1ixA3K1Fi1czKQ33VwanfjX6JB1b3BFT4", 3:"1RK2KXCLjG1Y8j87G28CsLeaVPYZfnerZ", 4:"1XSYzWG01gIPo4EAKhLVjGUasP4YWmntI",
@@ -780,12 +827,8 @@ function badgeFor(d){ return d.status==="acuerdo" ? '<span class="badge ok">Con 
 function scopeText(d){ return d.scope.map(function(c){return CARGOS[c];}).join(" · "); }
 function mapColor(d){ return d.status==="acuerdo" ? "#6d1738" : "#d8c3ce"; }
 
-/* ---------- selector + lista lateral de entidades ---------- */
-var sel = $("selEntidad");
+/* ---------- lista lateral de entidades ---------- */
 DATA.slice().sort(function(a,b){ return a.name.localeCompare(b.name,"es-MX"); }).forEach(function(d){
-  var o = document.createElement("option"); o.value = d.code;
-  o.textContent = d.name + (d.status==="acuerdo" ? " — con acuerdo" : " — sin acuerdo localizado");
-  sel.appendChild(o);
   var li = document.createElement("li");
   var b = document.createElement("button"); b.type = "button"; b.className = "side-choice"; b.setAttribute("data-code", d.code);
   b.style.setProperty("--map-color", mapColor(d));
@@ -794,7 +837,6 @@ DATA.slice().sort(function(a,b){ return a.name.localeCompare(b.name,"es-MX"); })
   li.appendChild(b);
   $("entList").appendChild(li);
 });
-sel.addEventListener("change", function(){ if(sel.value) openFicha(parseInt(sel.value,10), true); });
 function markSideActive(){
   Array.prototype.forEach.call(document.querySelectorAll(".side-choice"), function(b){
     b.setAttribute("aria-current", String(!!current && parseInt(b.getAttribute("data-code"),10)===current.code));
@@ -1095,7 +1137,6 @@ function openFicha(code, scroll){
   if(!d) return;
   current = d; currentTab = "pre";
   currentCargo = cargoList(d).filter(function(c){ return d.scope.indexOf(c)>=0; })[0] || cargoList(d)[0];
-  sel.value = code;
   $("fNombre").textContent = d.name;
   $("fOple").textContent = d.ople + " (" + d.siglas + ")";
   $("fSilhouetteUse").setAttribute("href", "#" + (EST[d.code] || "AGS"));
@@ -1118,6 +1159,10 @@ function openFicha(code, scroll){
     docLink(drv(o8[0]), "Acervo · 08 Publicaciones OPLE", o8[1], "Publicaciones del OPLE de " + d.name + " en el Acervo")
     + yearsBlock(OPLEYEARS[d.code], "08 Publicaciones OPLE · Por año")
     + docLink(ACERVO.dirOple, "Acervo · 08 Publicaciones OPLE", "Directorio oficial de los 32 OPLE", "Documento en la raíz de la carpeta 08");
+  var pl = PLANES[d.code];
+  $("oplePlanes").innerHTML = pl
+    ? docLink(drv(pl), "Planes 2026–2027 · Carpeta de la entidad", "Plan, numeralia y plataformas 2026–2027 — " + d.name, "Subcarpeta de la entidad en el proyecto «Elecciones 2026-2027 — Planes, numeralia y plataformas»")
+    : '<p class="small muted" style="margin-top:.6rem">Sin subcarpeta de planes vinculada para esta entidad.</p>';
   var s2 = SENT02[d.code], s3 = SENT03[d.code];
   $("expAcervo").innerHTML =
     (s2 ? docLink(drv(s2), "Acervo · 02 Sentencias locales 2023-2026", "Sentencias locales 2023-2026 — " + d.name, "Carpeta de la entidad en la carpeta 02") + yearsBlock(YEARS02[d.code], "02 · Por año")
@@ -1146,7 +1191,7 @@ function openFicha(code, scroll){
   goStep("ficha");
 }
 function resetConsulta(target){
-  current = null; currentDetail = null; sel.value = ""; syncParticularTab(); updateMapSelection(); markSideActive(); hideTooltip(); closeBloques();
+  current = null; currentDetail = null; syncParticularTab(); updateMapSelection(); markSideActive(); hideTooltip(); closeBloques();
   goStep(target || "mapa");
 }
 $("btnVolver").addEventListener("click", function(){ resetConsulta("mapa"); });
