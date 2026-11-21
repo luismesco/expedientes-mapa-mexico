@@ -339,6 +339,16 @@ body{height:100dvh}
 #vistaFicha .bloque-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:.15rem}
 .cargo-tabs{flex:none}
 @media(max-width:850px){#vistaMapa .mexico-map{width:100%}}
+
+/* ===== Fuentes con scroll interno · barra lateral con pie completo ===== */
+#fuentes{overflow:hidden;display:flex;flex-direction:column}
+#fuentes>.section-row{flex:none;margin-top:0}
+#fuentes>p{flex:none}
+.fuentes-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:.15rem;padding-bottom:.5rem}
+.chat-history{height:100dvh;max-height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+.chat-history-panel{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}
+.chat-history-panel nav{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.chat-history .chat-private{flex:none}
 </style>
 </head>
 <body>
@@ -579,6 +589,7 @@ body{height:100dvh}
       <section id="fuentes" aria-labelledby="sourcesTitle" hidden>
         <div class="section-row"><div><p class="kicker">Consulta</p><h2 id="sourcesTitle">Fuentes y reglas</h2></div></div>
         <p style="margin-top:.6rem"><button class="btn-ghost" id="btnFuentesBack" type="button">← Volver al mapa</button></p>
+        <div class="fuentes-scroll">
         <div class="chat-sources">
           <h3>Cobertura</h3>
           <div class="stats" role="list" aria-label="Resumen de cobertura de precampaña 2026–2027">
@@ -601,6 +612,7 @@ body{height:100dvh}
           </div>
         </div>
         <p class="chat-collection">Inventario de topes verificado en Drive al 20 de noviembre de 2026: 22 de 32 entidades con acuerdo, 29 PDF vinculados y 54 de 80 combinaciones ámbito–cargo. No representa la totalidad de los acuerdos de los OPLE ni sustituye el cotejo en el PDF oficial.</p>
+        </div>
       </section>
 
       <footer class="site-footer"><p>Expedientes — Mapa de México<span>Autor: Luis Montañez Escobar</span></p><a href="#chatRoot">Volver al inicio ↑</a></footer>
