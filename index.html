@@ -185,6 +185,12 @@ ul.links li:last-child{border-bottom:none}
 .filtros{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
 .filtros button{border:1px solid #d9cbd2;background:#fff;color:var(--chat-wine);border-radius:2rem;padding:.45rem .8rem;font-size:.72rem;font-weight:600;min-height:2.4rem}
 .filtros button[aria-pressed="true"]{background:var(--chat-wine);border-color:var(--chat-wine);color:#fff}
+.gen-controls{margin-top:1rem}
+.gen-controls .field{max-width:26rem}
+.gen-controls .filtros{margin-top:.7rem}
+#genCount{margin-top:.6rem}
+.eyo-vuelta{font-size:.85rem;font-weight:700;color:#4c3541;margin:1rem 0 0}
+.eyo-vuelta:first-child{margin-top:.2rem}
 .empty{border:1px solid var(--chat-line);background:#faf6f8;padding:1rem;border-radius:.65rem;margin-top:.9rem;font-size:.8rem;line-height:1.7}
 .empty p+p{margin-top:.6rem}
 .tabs{display:flex;flex-wrap:wrap;gap:.3rem;background:#f1ecef;padding:.25rem;border-radius:2rem;margin-top:.9rem;width:fit-content;max-width:100%}
@@ -393,6 +399,16 @@ body{height:100dvh}
             <span class="stat-chip" role="listitem"><b>29</b> PDF vinculados</span>
             <span class="stat-chip" role="listitem"><b>54 / 80</b> combinaciones ámbito–cargo</span>
           </div>
+          <div class="gen-controls">
+            <div class="field"><label for="genSearch">Buscar entidad</label><input type="search" id="genSearch" placeholder="Escribe el nombre de la entidad…" autocomplete="off"></div>
+            <div class="filtros" id="genFiltros" role="group" aria-label="Filtrar entidades por acuerdo de precampaña">
+              <button type="button" data-genfilter="todos" aria-pressed="true">Todos</button>
+              <button type="button" data-genfilter="acuerdo" aria-pressed="false">Con acuerdo de precampaña</button>
+              <button type="button" data-genfilter="pendiente" aria-pressed="false">Sin acuerdo localizado</button>
+            </div>
+            <p class="small muted" id="genCount" aria-live="polite">Mostrando 32 de 32 entidades</p>
+            <p class="empty" id="genEmpty" hidden>Ninguna entidad coincide con la búsqueda y el filtro seleccionados.</p>
+          </div>
           <div id="genWrap"></div>
           <h3 style="margin-top:1.2rem">Cobertura por entidad y cargo — precampaña 2026–2027</h3>
           <p class="small muted" style="margin-top:.5rem;line-height:1.7">Toca cualquier fila para abrir la ficha de la entidad. «Acuerdo localizado» significa que el PDF oficial está en el acervo; el monto por cargo se muestra como <em>por verificar en PDF oficial</em> hasta leerlo en el documento. Cobertura por tipo de elección (resumen, pág. 13): gubernatura 11 de 17, diputaciones locales 21 de 31, ayuntamientos o alcaldías 21 de 30, juntas municipales 0 de 1 y diputaciones federales 1 de 1.</p>
@@ -452,8 +468,8 @@ body{height:100dvh}
         </div>
 
         <div class="chat-suggestions" role="group" aria-label="Accesos de la ficha">
-          <button type="button" data-goto-block="b-eyo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5l-2 3Zm5 3h4M12 2v2M12 8v4m0 2v.1"/></svg><span>1 · Errores y Omisiones<small>Oficios, observaciones y respuestas de la entidad</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
-          <button type="button" data-goto-block="b-norm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5v19h14V3h-3M9 2h6v4H9zM8 17v-3m4 3v-6m4 6V9"/></svg><span>2 · Normatividad<small>Leyes, reglamentos, lineamientos y acuerdos aplicables</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
+          <button type="button" data-goto-block="b-eyo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5l-2 3Zm5 3h4M12 2v2M12 8v4m0 2v.1"/></svg><span>1 · Errores y Omisiones<small>Oficios UTF · Informe anual 2025 · 1V 4/32 · 2V 8/32</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
+          <button type="button" data-goto-block="b-norm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5v19h14V3h-3M9 2h6v4H9zM8 17v-3m4 3v-6m4 6V9"/></svg><span>2 · Normatividad<small>Normatividad local del estado · Carpeta 05 del Acervo</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
           <button type="button" data-goto-block="b-ople"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v17M6 20h12M4 7h16M6 7l-3 6h6zm12 0-3 6h6z"/></svg><span>3 · OPLE<small>Instituto electoral local, acuerdos y estrados</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
           <button type="button" data-goto-block="b-topes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V3m0 1h12l-3 4 3 4H6M3 21h6"/></svg><span>4 · Topes de campaña<small>Acuerdos y montos por proceso, cargo y demarcación</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
           <button type="button" data-goto-block="b-exp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.1M3 12h.1M3 18h.1"/></svg><span>5 · Expedientes<small>Listado filtrado a la entidad, con búsqueda por folio</small></span><span class="chat-suggestion-arrow" aria-hidden="true">↗</span></button>
@@ -462,30 +478,17 @@ body{height:100dvh}
 
         <div id="detailBar" hidden><button class="btn-ghost" id="btnBackCards" type="button">← Volver a las tarjetas</button><button class="btn-ghost" id="btnDetailToMap" type="button">Volver al mapa</button></div>
 
-        <section class="chat-sources bloque" id="b-eyo" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-eyo-btn" aria-expanded="false" aria-controls="b-eyo-body"><span class="bnum">1</span><span class="bloque-titles"><span class="bloque-title">Errores y Omisiones</span><span class="bloque-sum">Sin carpeta en el Acervo · Se consulta en DJF con tu sesión</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-eyo-body" role="region" aria-labelledby="b-eyo-btn" hidden>
-          <p class="intro">Oficios, observaciones y respuestas vinculados a los expedientes de <span class="entName">la entidad</span>. Filtra por tipo de documento:</p>
-          <div class="filtros" id="eyoFiltros" role="group" aria-label="Tipo de documento de errores y omisiones">
-            <button type="button" data-eyo="Oficio de errores y omisiones" aria-pressed="false">Oficios de errores y omisiones</button>
-            <button type="button" data-eyo="Observaciones" aria-pressed="false">Observaciones</button>
-            <button type="button" data-eyo="Respuestas y aclaraciones" aria-pressed="false">Respuestas</button>
-            <button type="button" data-eyo="Dictamen y proyecto de resolución" aria-pressed="false">Dictámenes</button>
-          </div>
-          <div class="empty" id="eyoResult"><p><strong>Sin carpeta de Errores y Omisiones en el Acervo</strong> (verificado el 20 de noviembre de 2026). Referencia: raíz del Acervo y carpeta «07 Informes e inventarios».</p><p>Los oficios y observaciones de <span class="entName">la entidad</span> se consultan en DJF con tu sesión autorizada.</p><p><a class="btn-primary" href="https://analisiseyodjf.up.railway.app" target="_blank" rel="noopener">Abrir DJF (producción)</a></p></div>
-          <div class="doc-list">
-            <a class="document-link" href="https://drive.google.com/drive/folders/1mOoV3PmfIzDbmzyqqnctWS16qi3LDQES" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Acervo · Raíz</span>Acervo electoral organizado<small>Raíz del Acervo en Drive (10 carpetas)</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
-            <a class="document-link" href="https://drive.google.com/drive/folders/1kk4fvjidwRyq95bRA6qstgos-ejasXTj" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Acervo · 07</span>Informes e inventarios<small>Referencia: informes, inventarios e índices del Acervo</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
-          </div>
+        <section class="chat-sources bloque" id="b-eyo" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-eyo-btn" aria-expanded="false" aria-controls="b-eyo-body"><span class="bnum">1</span><span class="bloque-titles"><span class="bloque-title">Errores y Omisiones</span><span class="bloque-sum">Oficios UTF · Informe anual 2025 · 1V 4/32 · 2V 8/32</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-eyo-body" role="region" aria-labelledby="b-eyo-btn" hidden>
+          <p class="intro">Oficios notificados por la Unidad Técnica de Fiscalización (UTF) a <span class="entName">la entidad</span> — Informe Anual 2025, primera y segunda vuelta. Esta sección contiene únicamente los oficios de la UTF.</p>
+          <div id="eyoContent"></div>
+          <p class="small muted" style="margin-top:1rem;line-height:1.7">Cobertura verificada en Drive: primera vuelta, 4 de 32 entidades; segunda vuelta, 8 de 32; 9 entidades con al menos un oficio localizado.</p>
           </div>
         </section>
 
-        <section class="chat-sources bloque" id="b-norm" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-norm-btn" aria-expanded="false" aria-controls="b-norm-body"><span class="bnum">2</span><span class="bloque-titles"><span class="bloque-title">Normatividad</span><span class="bloque-sum">Leyes y acuerdos aplicables · Local (05) y federal (04)</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-norm-body" role="region" aria-labelledby="b-norm-btn" hidden>
-          <p class="intro">Marco general aplicable a la fiscalización en <span class="entName">la entidad</span>: normatividad local en «05 Normativa local» y federal en «04 Normativa federal» del Acervo.</p>
+        <section class="chat-sources bloque" id="b-norm" hidden><h3 class="bloque-head"><button type="button" class="bloque-toggle" id="b-norm-btn" aria-expanded="false" aria-controls="b-norm-body"><span class="bnum">2</span><span class="bloque-titles"><span class="bloque-title">Normatividad</span><span class="bloque-sum">Normatividad local del estado · Carpeta 05 del Acervo</span></span><svg class="bloque-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></h3><div class="bloque-body" id="b-norm-body" role="region" aria-labelledby="b-norm-btn" hidden>
+          <p class="intro">Normatividad local de <span class="entName">la entidad</span>: carpeta propia de la entidad en «05 Normativa local» del Acervo.</p>
           <ul class="links">
-            <li><strong>Ley General de Instituciones y Procedimientos Electorales (LGIPE)</strong> — texto vigente, Cámara de Diputados.<br><a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LGIPE.pdf" target="_blank" rel="noopener">Abrir texto vigente (PDF oficial)</a></li>
-            <li><strong>Constitución Política de los Estados Unidos Mexicanos</strong> — artículos 41 y 116: bases de la fiscalización y de los OPLE.</li>
-            <li><strong>Ley General de Partidos Políticos</strong> y <strong>Ley General del Sistema de Medios de Impugnación en Materia Electoral</strong> — textos vigentes en la biblioteca jurídica de la Cámara de Diputados.</li>
-            <li><strong>Reglamento de Fiscalización del INE</strong> y acuerdos del Consejo General del INE — incluido el acuerdo <strong>INE/CG480/2026</strong> (calendarios de coordinación 2026–2027) y el <strong>INE/CG660/2026</strong> (topes federales).</li>
-            <li><strong>Normatividad local de <span class="entName">la entidad</span> en el Acervo</strong> — carpeta por entidad en «05 Normativa local», con los tipos de norma que contiene, y la normativa federal común en «04 Normativa federal»:<div class="doc-list" id="normLocal"></div></li>
+            <li><strong>Normatividad local de <span class="entName">la entidad</span> en el Acervo</strong> — carpeta por entidad en «05 Normativa local», con los tipos de norma que contiene:<div class="doc-list" id="normLocal"></div></li>
             <li><strong>Directorio oficial de OPLE del INE</strong> — la constitución local, la ley electoral local y los acuerdos del <span class="entSiglas">OPLE</span> también se publican en el sitio del instituto local.<br><a href="https://portal.ine.mx/voto-y-elecciones/opl/oples-estados/" target="_blank" rel="noopener">Directorio oficial de OPLE (INE)</a></li>
           </ul>
           </div>
@@ -550,6 +553,7 @@ body{height:100dvh}
             <a class="document-link" href="https://drive.google.com/drive/folders/1mOoV3PmfIzDbmzyqqnctWS16qi3LDQES" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Acervo · Drive</span>Acervo electoral organizado<small>Raíz: sentencias, normativa, jurisprudencia, OPLE y DOF (10 carpetas)</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
             <a class="document-link" href="https://drive.google.com/file/d/1jWAjt7CNZA8EaYh9QBUiVsjvCtoOR9Fk/view?usp=drivesdk" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">INE · Acuerdo</span>INE/CG660/2026<small>Topes federales: $440,652 precampaña · $2,491,466 campaña</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
             <a class="document-link" href="https://portal.ine.mx/voto-y-elecciones/opl/oples-estados/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#consejo"></use></svg><span><span class="source-badge">INE · Directorio</span>Directorio oficial de OPLE<small>Sitios oficiales, acuerdos y estrados de cada instituto local</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
+            <a class="document-link" href="https://drive.google.com/drive/folders/1XcU9SYmnRlt-ICkvHL1Zp1q4DtajitUF" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Acervo · 04</span>Normativa federal<small>Leyes, códigos, reglamentos, lineamientos y acuerdos + Gaceta Electoral del INE</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
             <a class="document-link" href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LGIPE.pdf" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#informe"></use></svg><span><span class="source-badge">Ley · Cámara de Diputados</span>LGIPE — texto vigente (PDF)<small>Marco general de fiscalización</small></span><svg class="icon" aria-hidden="true"><use href="#enlace"></use></svg></a>
           </div>
         </div>
@@ -725,6 +729,42 @@ function topesFolderLink(d){
   return '<div class="doc-list">' + docLink(drv(TOPESF[d.code]), "Drive · Carpeta de topes", "Carpeta de topes de " + d.name, d.status === "pendiente" ? "Carpeta de la entidad en Drive (vacía al corte: sin acuerdo localizado)" : "Carpeta de la entidad en Drive, con el acuerdo de topes y sus anexos en PDF") + '</div>';
 }
 
+/* ---------- Errores y Omisiones: oficios UTF, Informe Anual 2025 (verificado en Drive) ---------- */
+function fileUrl(id){ return "https://drive.google.com/file/d/"+id+"/view?usp=drivesdk"; }
+var EYO_UTF = {
+  22:{v1:{label:"INE-UTF-DA-12108-2026",type:"PDF",id:"1TEPExIsJ9rr0ya2MtCFk7V2ZdpYbxOnp"},v2:{label:"INE-UTF-DA-13731-2026",type:"DOCX",id:"1mWKeBuOkNW_yZP451rKCgLom2lz6mT9H"}},
+  23:{v1:{label:"INE-UTF-DA-12380-2026",type:"PDF",id:"1DsWOh8kW6mpg9JAqRAgUNLSpYjm_TM6X"},v2:{label:"INE-UTF-DA-13450-2026",type:"PDF",id:"1foYL-p1PaRu5HuJRPlbQiSWzUsJIeXe0"},pkg2:"1p0k2fZBeJlO2-eSEwYHL5xuGYwBrEe6o"},
+  24:{v1:{label:"INE-UTF-DA-11991-2026",type:"PDF",id:"10QbSyFyQdnOAAlawADwuLj2zDEGvZLWR"},v2:{label:"INE-UTF-DA-13473-2026",type:"PDF",id:"1MylUTIZZ67Gg66i1Z76Zf2OHowjao79S"},pkg2:"1QE-SETaKXdPutVJrNFUCDGZhRlrXkQ6p"},
+  29:{v1:{label:"Oficio_INE_Tlaxcala_1V",type:"PDF",id:"1tc56ZJ3dIQQNn0EIPpeaAK827zMcFAyo"}},
+  14:{v2:{label:"03_Oficio_INE_2V_IA25_JAL_2026.pdf",type:"PDF",id:"1Er9y2dHGqZwBwpObvQQfrAPInUH7KAbv"},pkg2:"1Y3GLCM5_jhWAEsirAtFeunq0NjgQdjMk"},
+  9:{v2:{label:"03_Oficio_INE_2V_IA25_CDMX_2026.pdf",type:"PDF",id:"1j9ZZ9A-s5tS7UXQfks12T_hfoQahRZ3W"},pkg2:"1Kbj_fizB4WFL8STNdBU1N5XZoYIDXPHp"},
+  12:{v2:{label:"03_Oficio_INE_2V_IA25_GRO_2026.pdf",type:"PDF",id:"1ksqaouDa9Ht9cFDAipJdvsyZVs5h5yTZ"},pkg2:"1XKdXF_qqqzKmlhph9tMuUqwAhymlJ2JG"},
+  13:{v2:{label:"Oficio_INE_Hidalgo_2V_INE_UTF_DA_13249_2026.pdf",type:"PDF",id:"18uiUmPtD3mlLYOhr2HVfdPqK_ZcYMOcC"},pkg2:"1BUpBnSqmh0MjX8pCAjpkPcuSkj1-ka-W"},
+  19:{v2:{label:"Oficio_INE_UTF_DA_13595_2026_Nuevo_Leon.pdf",type:"PDF",id:"18HaVV8H7kgTigb8jhYHh94ZoCNa9aY7m"},pkg2:"1QUMwvJpxjcwJonNyARYpO6O5QkEVPbv9"}
+};
+function eyoVueltaHtml(oficio, pkgId, vueltaLabel, badge){
+  if(!oficio){
+    return '<div class="empty"><p>Aún no hemos localizado un oficio de la UTF para esta entidad en esta vuelta.</p></div>';
+  }
+  var html = '<div class="doc-list">'
+    + docLink(fileUrl(oficio.id), badge, oficio.label, "Oficio de la UTF · " + oficio.type + " — abrir archivo en Drive")
+    + '</div>';
+  if(pkgId){
+    html += '<div class="doc-list">'
+      + docLink(drv(pkgId), "UTF · Paquete " + vueltaLabel, "Carpeta del paquete de " + vueltaLabel.toLowerCase(), "Carpeta en Drive con el paquete completo de la vuelta")
+      + '</div>';
+  }
+  return html;
+}
+function renderEyo(d){
+  var box = $("eyoContent");
+  if(!box) return;
+  var e = EYO_UTF[d.code] || {};
+  box.innerHTML =
+      '<h4 class="eyo-vuelta">Primera vuelta</h4>' + eyoVueltaHtml(e.v1, null, "Primera vuelta", "UTF · Informe Anual 2025 · 1V")
+    + '<h4 class="eyo-vuelta">Segunda vuelta</h4>' + eyoVueltaHtml(e.v2, e.pkg2, "Segunda vuelta", "UTF · Informe Anual 2025 · 2V");
+}
+
 var current = null, currentTab = "pre", currentCargo = "G", mapLoaded = false;
 var $ = function(id){ return document.getElementById(id); };
 function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
@@ -876,7 +916,7 @@ viewTabBtns.forEach(function(b){
       + (s2 ? '<a href="' + drv(s2) + '" target="_blank" rel="noopener">Sentencias 2023–2026 (02) ↗</a>' : '<span class="sin">Sentencias 2023–2026 (02): sin carpeta en el Acervo</span>')
       + (s3 ? '<a href="' + drv(s3) + '" target="_blank" rel="noopener">Sentencias 2014–2022 (03) ↗</a>' : '<span class="sin">Sentencias 2014–2022 (03): sin carpeta en el Acervo</span>')
       + '</div>';
-    return '<tr>'
+    return '<tr data-gen-name="' + esc(d.name) + '" data-gen-status="' + esc(d.status) + '">'
       + '<td><strong>' + esc(d.name) + '</strong><br><button type="button" class="gen-open" data-open="' + d.code + '">Abrir ficha →</button></td>'
       + '<td><strong>' + esc(d.siglas) + '</strong><br><span class="muted small">' + esc(d.ople) + '</span></td>'
       + '<td>' + estado + '</td>'
@@ -885,6 +925,33 @@ viewTabBtns.forEach(function(b){
   $("genWrap").innerHTML = '<table class="cov"><thead><tr><th>Entidad</th><th>OPLE</th><th>Precampaña 2026–2027</th><th>Enlaces directos del Acervo</th></tr></thead><tbody>' + rows + '</tbody></table>';
   Array.prototype.forEach.call(document.querySelectorAll("[data-open]"), function(b){
     b.addEventListener("click", function(){ openFicha(parseInt(b.getAttribute("data-open"),10), true); });
+  });
+})();
+
+/* ---------- vista general: búsqueda y filtros en vivo ---------- */
+(function(){
+  var input = $("genSearch"), count = $("genCount"), empty = $("genEmpty"), mode = "todos";
+  function normStr(s){ return String(s == null ? "" : s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+  function applyGenFilter(){
+    var q = normStr(input ? input.value.trim() : "");
+    var visible = 0;
+    Array.prototype.forEach.call(document.querySelectorAll("#genWrap tbody tr"), function(tr){
+      var name = normStr(tr.getAttribute("data-gen-name") || "");
+      var st = tr.getAttribute("data-gen-status") || "";
+      var ok = (!q || name.indexOf(q) >= 0) && (mode === "todos" || st === mode);
+      tr.hidden = !ok;
+      if(ok) visible++;
+    });
+    if(count) count.textContent = "Mostrando " + visible + " de 32 entidades";
+    if(empty) empty.hidden = visible !== 0;
+  }
+  if(input) input.addEventListener("input", applyGenFilter);
+  Array.prototype.forEach.call(document.querySelectorAll("#genFiltros button"), function(b){
+    b.addEventListener("click", function(){
+      mode = b.getAttribute("data-genfilter");
+      Array.prototype.forEach.call(document.querySelectorAll("#genFiltros button"), function(x){ x.setAttribute("aria-pressed", String(x === b)); });
+      applyGenFilter();
+    });
   });
 })();
 
@@ -986,12 +1053,12 @@ function openFicha(code, scroll){
     : "<strong>Sin acuerdo de precampaña localizado</strong> al 20 de noviembre de 2026 · <strong>Ventana prevista:</strong> " + esc(d.ventana) + " · <strong>Cargos previstos:</strong> " + esc(scopeText(d));
   Array.prototype.forEach.call(document.querySelectorAll(".entName"), function(el){ el.textContent = d.name; });
   Array.prototype.forEach.call(document.querySelectorAll(".entSiglas"), function(el){ el.textContent = d.siglas; });
+  renderEyo(d);
   $("opleNombre").textContent = d.ople; $("opleSiglas").textContent = d.siglas;
   $("opleAcuerdos").innerHTML = (d.pdfs.length ? pdfLinks(d) : '<p class="small muted" style="margin-top:.6rem">Sin PDF al corte: carpeta vacía. <a href="'+drv(TOPESF[d.code])+'" target="_blank" rel="noopener">Ver carpeta en Drive</a></p>') + topesFolderLink(d);
   var n5 = NORM5[d.code];
   $("normLocal").innerHTML =
     docLink(drv(n5[0]), "Acervo · 05 Normativa local", "Normativa local de " + d.name, "Tipos en la carpeta: " + n5[1])
-    + docLink(ACERVO.f04, "Acervo · 04 Normativa federal", "Normativa federal", "Leyes, códigos, reglamentos, lineamientos, acuerdos y otros + Gaceta Electoral del INE")
     + docLink(ACERVO.idx05csv, "Acervo · Índice 05", "INDICE_05_Normativa_local.csv", "Índice de la normativa local de las 32 entidades")
     + docLink(ACERVO.idx05md, "Acervo · Índice 05", "INDICE_05_Normativa_local.md", "Índice de la normativa local de las 32 entidades");
   var o8 = OPLE8[d.code];
@@ -1041,12 +1108,6 @@ Array.prototype.forEach.call(document.querySelectorAll(".tabs button"), function
     currentTab = b.getAttribute("data-tab");
     Array.prototype.forEach.call(document.querySelectorAll(".tabs button"), function(x){ x.setAttribute("aria-selected", x===b ? "true" : "false"); });
     renderTopes();
-  });
-});
-Array.prototype.forEach.call(document.querySelectorAll("#eyoFiltros button"), function(b){
-  b.addEventListener("click", function(){
-    Array.prototype.forEach.call(document.querySelectorAll("#eyoFiltros button"), function(x){ x.setAttribute("aria-pressed", x===b ? "true" : "false"); });
-    $("eyoResult").innerHTML = '<p><strong>'+esc(b.getAttribute("data-eyo"))+'</strong> — sin documentos de este tipo cargados en esta vista para '+(current?esc(current.name):"la entidad")+'. La consulta con permisos se realiza en DJF con tu sesión autorizada.</p><p><a class="btn-primary" href="https://analisiseyodjf.up.railway.app" target="_blank" rel="noopener">Abrir DJF (producción)</a></p>';
   });
 });
 $("expForm").addEventListener("submit", function(ev){
